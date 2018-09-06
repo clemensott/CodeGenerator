@@ -1,0 +1,23 @@
+﻿<Window x:Class="CodeGenerator.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CodeGenerator"
+        xmlns:pp="clr-namespace:CodeGenerator.Property"
+        xmlns:st="clr-namespace:CodeGenerator.Singleton"
+        xmlns:dp="clr-namespace:CodeGenerator.DependencyProperty"
+        mc:Ignorable="d"
+        Title="Codegenerator" Height="600" Width="725">
+    <TabControl>
+        <TabItem Header="Property" DataContext="{Binding Property,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <pp:PropertyControl />
+        </TabItem>
+        <TabItem Header="Singleton" DataContext="{Binding Singleton,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <st:SingletonControl />
+        </TabItem>
+        <TabItem Header="DependencyProperty" DataContext="{Binding DependencyProperty,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <dp:DependencyPropertyControl />
+        </TabItem>
+    </TabControl>
+</Window>
