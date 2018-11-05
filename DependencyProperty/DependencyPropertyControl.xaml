@@ -16,8 +16,8 @@
         <DataGrid ItemsSource="{Binding CodeObjects,Mode=OneWay}" AutoGenerateColumns="False"
                   CanUserAddRows="True" CanUserDeleteRows="True">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" Binding="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="PropertyType" Binding="{Binding PropertyType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="ControlType" Binding="{Binding ControlType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DefaultValue" Binding="{Binding DefaultValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
