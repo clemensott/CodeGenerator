@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace CodeGenerator.DependencyProperty
 {
@@ -19,7 +14,7 @@ namespace CodeGenerator.DependencyProperty
                 if (value == name) return;
 
                 name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
 
@@ -31,7 +26,7 @@ namespace CodeGenerator.DependencyProperty
                 if (value == propertyType) return;
 
                 propertyType = value;
-                OnPropertyChanged("PropertyType");
+                OnPropertyChanged(nameof(PropertyType));
             }
         }
 
@@ -43,7 +38,7 @@ namespace CodeGenerator.DependencyProperty
                 if (value == controlType) return;
 
                 controlType = value;
-                OnPropertyChanged("ControlType");
+                OnPropertyChanged(nameof(ControlType));
             }
         }
 
@@ -55,7 +50,7 @@ namespace CodeGenerator.DependencyProperty
                 if (value == defaultValue) return;
 
                 defaultValue = value;
-                OnPropertyChanged("DefaultValue");
+                OnPropertyChanged(nameof(DefaultValue));
             }
         }
 

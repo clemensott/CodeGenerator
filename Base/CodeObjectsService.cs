@@ -19,8 +19,8 @@ namespace CodeGenerator
                 if (value == codePartsIndex) return;
 
                 codePartsIndex = value;
-                OnPropertyChanged("CodePartsIndex");
-                OnPropertyChanged("IsCopying");
+                OnPropertyChanged(nameof(CodePartsIndex));
+                OnPropertyChanged(nameof(IsCopying));
             }
         }
 

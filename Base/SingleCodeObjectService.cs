@@ -18,7 +18,7 @@ namespace CodeGenerator
                 if (CodeObjects.Count == 0) CodeObjects.Add(value);
                 else CodeObjects[0] = value;
 
-                OnPropertyChanged("CodeObject");
+                OnPropertyChanged(nameof(CodeObject));
             }
         }
 
@@ -38,7 +38,7 @@ namespace CodeGenerator
                 }
                 else parseText = value;
 
-                OnPropertyChanged("ParseText");
+                OnPropertyChanged(nameof(ParseText));
             }
         }
 

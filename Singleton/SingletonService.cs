@@ -1,9 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeGenerator.Singleton
 {
@@ -11,6 +7,7 @@ namespace CodeGenerator.Singleton
     {
         public SingletonService()
         {
+            CodeObject = new Singleton();
         }
 
         public override bool TryParse(string line, out Singleton singleton)

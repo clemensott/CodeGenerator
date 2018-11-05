@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel;
 
 namespace CodeGenerator.Property
 {
@@ -20,7 +15,7 @@ namespace CodeGenerator.Property
                 if (value == propChange) return;
 
                 propChange = value;
-                OnPropertyChanged("PropChange");
+                OnPropertyChanged(nameof(PropChange));
             }
         }
 
@@ -32,7 +27,7 @@ namespace CodeGenerator.Property
                 if (value == datatype) return;
 
                 datatype = value;
-                OnPropertyChanged("Datatype");
+                OnPropertyChanged(nameof(Datatype));
             }
         }
 
@@ -44,7 +39,7 @@ namespace CodeGenerator.Property
                 if (value == name) return;
 
                 name = value;
-                OnPropertyChanged("Name");
+                OnPropertyChanged(nameof(Name));
             }
         }
 

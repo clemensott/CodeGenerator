@@ -1,12 +1,7 @@
 ﻿using CodeGenerator.DependencyProperty;
 using CodeGenerator.Property;
 using CodeGenerator.Singleton;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeGenerator
 {
@@ -24,7 +19,7 @@ namespace CodeGenerator
                 if (value == property) return;
 
                 property = value;
-                OnPropertyChanged("Property");
+                OnPropertyChanged(nameof(Property));
             }
         }
 
@@ -36,7 +31,7 @@ namespace CodeGenerator
                 if (value == singleton) return;
 
                 singleton = value;
-                OnPropertyChanged("Singleton");
+                OnPropertyChanged(nameof(Singleton));
             }
         }
 
@@ -48,7 +43,7 @@ namespace CodeGenerator
                 if (value == dependencyProperty) return;
 
                 dependencyProperty = value;
-                OnPropertyChanged("DependencyProperty");
+                OnPropertyChanged(nameof(DependencyProperty));
             }
         }
 

@@ -23,7 +23,7 @@ namespace CodeGenerator
                 }
                 else parseText = value;
 
-                OnPropertyChanged("ParseText");
+                OnPropertyChanged(nameof(ParseText));
             }
         }
 
