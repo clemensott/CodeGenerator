@@ -44,7 +44,7 @@ namespace CodeGenerator
 
         public string GetNextCodePart(out bool isLastPart)
         {
-            int count = GetObjectsCodeGenerators().Count();
+            int count = Math.Max(GetCodePartGenerators().Count(), GetObjectsCodeGenerators().Count());
 
             if (CodePartsIndex == -1)
             {

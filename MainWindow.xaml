@@ -4,12 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:CodeGenerator"
+        xmlns:sp="clr-namespace:CodeGenerator.Simple"
         xmlns:pp="clr-namespace:CodeGenerator.Property"
+        xmlns:rp="clr-namespace:CodeGenerator.Replace"
         xmlns:st="clr-namespace:CodeGenerator.Singleton"
         xmlns:dp="clr-namespace:CodeGenerator.DependencyProperty"
         mc:Ignorable="d"
         Title="Codegenerator" Height="600" Width="725">
+    
     <TabControl>
+        <TabItem Header="Simple" DataContext="{Binding Simple,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <sp:SimpleControl />
+        </TabItem>
+        <TabItem Header="Replace" DataContext="{Binding Replace,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <rp:ReplaceControl />
+        </TabItem>
         <TabItem Header="Property" DataContext="{Binding Property,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
             <pp:PropertyControl />
         </TabItem>

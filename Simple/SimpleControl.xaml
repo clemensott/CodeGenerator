@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="CodeGenerator.Singleton.SingletonControl"
+﻿<UserControl x:Class="CodeGenerator.Simple.SimpleControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,13 +13,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBox Margin="5" TextAlignment="Center"
-                 Text="{Binding CodeObject.ClassName,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Margin="5" TextAlignment="Center" KeyDown="TextBox_KeyDown"
+                 Text="{Binding CodeObject.CompleteCommend,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>
-            <Button Content="Next" Margin="5" Width="100" Click="BtnNext_Click"/>
-            <Button Content="Stop" Margin="5" Width="100" IsEnabled="{Binding IsCopying}" Click="BtnStop_Click"/>
         </StackPanel>
     </Grid>
 </UserControl>

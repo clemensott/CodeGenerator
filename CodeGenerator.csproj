@@ -76,6 +76,17 @@
       <DependentUpon>PropertyControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Property\CodePropertiesService.cs" />
+    <Compile Include="Replace\Replace.cs" />
+    <Compile Include="Replace\ReplaceControl.xaml.cs">
+      <DependentUpon>ReplaceControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Replace\ReplaceService.cs" />
+    <Compile Include="Replace\ReplaceText.cs" />
+    <Compile Include="Simple\Simple.cs" />
+    <Compile Include="Simple\SimpleControl.xaml.cs">
+      <DependentUpon>SimpleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Simple\SimpleService.cs" />
     <Compile Include="Singleton\Singleton.cs" />
     <Compile Include="Singleton\SingletonControl.xaml.cs">
       <DependentUpon>SingletonControl.xaml</DependentUpon>
@@ -101,6 +112,14 @@
     <Page Include="Property\PropertyControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Replace\ReplaceControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Simple\SimpleControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Singleton\SingletonControl.xaml">
       <SubType>Designer</SubType>

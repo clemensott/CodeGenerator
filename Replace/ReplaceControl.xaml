@@ -1,0 +1,46 @@
+﻿<UserControl x:Class="CodeGenerator.Replace.ReplaceControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CodeGenerator.Replace"
+             xmlns:con="clr-namespace:StdOttWpfLib.Converters;assembly=StdOttWpfLib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <UserControl.Resources>
+        <con:EnumToStringConverter x:Key="enumCon"/>
+    </UserControl.Resources>
+    
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBox Name="tbxReplaceText" AcceptsReturn="True" AutoWordSelection="True"
+                 Text="{Binding SrcText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}" 
+                 KeyDown="TbxReplaceText_KeyDown"/>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding CodeObjects,Mode=OneWay}"
+                  AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="CaseSensitive" Binding="{Binding CaseSensitive,Mode=TwoWay,
+                                      UpdateSourceTrigger=PropertyChanged,Converter={StaticResource enumCon}}"/>
+                <DataGridTextColumn Header="Search" Binding="{Binding SearchText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Replace" Binding="{Binding ReplaceText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <TextBox Grid.Row="2" Name="tbxParseText" Margin="5" AcceptsReturn="True" 
+                 Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>
+            <Button Content="Next" Margin="5" Width="100" Click="BtnNext_Click"/>
+            <Button Content="Stop" Margin="5" Width="100" IsEnabled="{Binding IsCopying}" Click="BtnStop_Click"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

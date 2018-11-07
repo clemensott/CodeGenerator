@@ -1,4 +1,5 @@
-﻿using StdOttWpfLib.Hotkey;
+﻿using StdOttWpfLib;
+using StdOttWpfLib.Hotkey;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -58,7 +59,11 @@ namespace CodeGenerator
         {
             Stop();
 
-            CopyAndShow(service.GetWholeCode());
+            try
+            {
+                CopyAndShow(service.GetWholeCode());
+            }
+            catch { }
         }
 
         public void CopyNextCodePart(ICodeObjectsService service)
@@ -68,9 +73,20 @@ namespace CodeGenerator
             currentCodeObjectsService = service;
 
             bool isLastPart;
-            string code = currentCodeObjectsService.GetNextCodePart(out isLastPart);
 
-            Copy(code);
+            try
+            {
+                string code = currentCodeObjectsService.GetNextCodePart(out isLastPart);
+
+                Copy(code);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(Utils.GetTypeMessageAndStack(e));
+
+                isLastPart = true;
+            }
+
 
             if (isLastPart) Stop();
             else

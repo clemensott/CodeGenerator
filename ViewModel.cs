@@ -1,5 +1,7 @@
 ﻿using CodeGenerator.DependencyProperty;
 using CodeGenerator.Property;
+using CodeGenerator.Replace;
+using CodeGenerator.Simple;
 using CodeGenerator.Singleton;
 using System.ComponentModel;
 
@@ -7,9 +9,35 @@ namespace CodeGenerator
 {
     public class ViewModel : INotifyPropertyChanged
     {
+        private SimpleService simple;
+        private ReplaceService replace;
         private CodePropertiesService property;
         private SingletonService singleton;
         private CodeDependencyPropertiesService dependencyProperty;
+
+        public SimpleService Simple
+        {
+            get { return simple; }
+            set
+            {
+                if (value == simple) return;
+
+                simple = value;
+                OnPropertyChanged(nameof(Simple));
+            }
+        }
+
+        public ReplaceService Replace
+        {
+            get { return replace; }
+            set
+            {
+                if (value == replace) return;
+
+                replace = value;
+                OnPropertyChanged(nameof(Replace));
+            }
+        }
 
         public CodePropertiesService Property
         {
@@ -49,6 +77,8 @@ namespace CodeGenerator
 
         public ViewModel()
         {
+            simple = new SimpleService();
+            replace = new ReplaceService();
             property = new CodePropertiesService();
             singleton = new SingletonService();
             dependencyProperty = new CodeDependencyPropertiesService();
