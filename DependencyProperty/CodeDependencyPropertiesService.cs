@@ -18,11 +18,11 @@ namespace CodeGenerator.DependencyProperty
                 if (data.Length < 4) return false;
                 foreach (string item in data) if (item.Length == 0) return false;
 
-                string name = data[0], propertyType = data[1], controlType = data[2], defaultValue = string.Join(" ", data.Skip(3));
+                string propertyType = data[0], name = data[1], controlType = data[2], defaultValue = string.Join(" ", data.Skip(3));
                 dependencyProperty = new DependencyProperty()
                 {
-                    Name = name,
                     PropertyType = propertyType,
+                    Name = name,
                     ControlType = controlType,
                     DefaultValue = defaultValue
                 };
