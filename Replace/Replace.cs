@@ -1,4 +1,6 @@
-﻿using StdOttWpfLib;
+﻿
+using StdOttStandard;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -87,7 +89,8 @@ namespace CodeGenerator.Replace
                     int lowerIndex = text.IndexOf(ToLowerAt(searchText, 0));
                     int upperIndex = text.IndexOf(ToUpperAt(searchText, 0));
 
-                    if (lowerIndex < upperIndex)
+                    if (lowerIndex == -1 && upperIndex == -1) index = -1;
+                    else if ((lowerIndex != -1 && lowerIndex < upperIndex) || upperIndex == -1)
                     {
                         index = lowerIndex;
                         replaceText = ToLowerAt(replaceText, 0);
@@ -100,7 +103,7 @@ namespace CodeGenerator.Replace
                     break;
 
                 default:
-                    throw Utils.GetNotImplementedExeption(this, nameof(TryGetReplaceIndex));
+                    throw new NotImplementedException();
             }
 
             return index != -1;

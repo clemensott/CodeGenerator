@@ -7,15 +7,18 @@ namespace CodeGenerator
     {
         private string parseText;
 
-        public string ParseText
+        public virtual string ParseText
         {
             get { return parseText; }
             set
             {
                 if (value == parseText) return;
 
+                bool tryToParse = value.Contains("\n");
+                value = value.Replace("\n", "").Replace("\r", "");
+
                 T newCodeObject;
-                if (value.Contains("\n") && TryParse(value.Replace("\n", "").Replace("\r", ""), out newCodeObject))
+                if (tryToParse && TryParse(value, out newCodeObject))
                 {
                     CodeObjects.Add(newCodeObject);
 

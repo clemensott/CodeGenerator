@@ -29,5 +29,10 @@ namespace CodeGenerator.Property
         {
             CodeCopyService.Current.Stop();
         }
+
+        private void BtnInterfaceImpl_Click(object sender, RoutedEventArgs e)
+        {
+            CodeCopyService.Current.CopyAndShow(CodePropertiesService.NotifyPropertyChangeText);
+        }
     }
 }

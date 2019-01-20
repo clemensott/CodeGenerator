@@ -9,9 +9,10 @@
         xmlns:rp="clr-namespace:CodeGenerator.Replace"
         xmlns:st="clr-namespace:CodeGenerator.Singleton"
         xmlns:dp="clr-namespace:CodeGenerator.DependencyProperty"
+        xmlns:bc="clr-namespace:CodeGenerator.BaseClass"
         mc:Ignorable="d"
         Title="Codegenerator" Height="600" Width="725">
-    
+
     <TabControl>
         <TabItem Header="Simple" DataContext="{Binding Simple,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
             <sp:SimpleControl />
@@ -27,6 +28,9 @@
         </TabItem>
         <TabItem Header="DependencyProperty" DataContext="{Binding DependencyProperty,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
             <dp:DependencyPropertyControl />
+        </TabItem>
+        <TabItem Header="BaseClass" DataContext="{Binding BaseClass,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <bc:BaseClassControl />
         </TabItem>
     </TabControl>
 </Window>

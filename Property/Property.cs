@@ -2,10 +2,13 @@
 
 namespace CodeGenerator.Property
 {
+    public enum AccessModifier { Default, Public, Internal, Protected, Private }
+
     public class Property : INotifyPropertyChanged
     {
         private bool propChange;
         private string datatype, name;
+        private AccessModifier geterModifier, seterModifier;
 
         public bool PropChange
         {
@@ -42,6 +45,32 @@ namespace CodeGenerator.Property
                 OnPropertyChanged(nameof(Name));
             }
         }
+
+        public AccessModifier GeterModifier
+        {
+            get { return geterModifier; }
+            set
+            {
+                if (value == geterModifier) return;
+
+                geterModifier = value;
+                OnPropertyChanged(nameof(GeterModifier));
+            }
+        }
+
+        public AccessModifier SeterModifier
+        {
+            get { return seterModifier; }
+            set
+            {
+                if (value == seterModifier) return;
+
+                seterModifier = value;
+                OnPropertyChanged(nameof(SeterModifier));
+            }
+        }
+
+        //public IEnumerable<AccessModifier> AccessModifiers => Enum.GetValues(typeof(AccessModifier)).Cast<AccessModifier>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

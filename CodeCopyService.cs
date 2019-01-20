@@ -1,5 +1,4 @@
-﻿using StdOttWpfLib;
-using StdOttWpfLib.Hotkey;
+﻿using StdOttFramework.Hotkey;
 using System;
 using System.Windows;
 using System.Windows.Input;
@@ -24,7 +23,7 @@ namespace CodeGenerator
         private DispatcherTimer timer;
         private string lastClipboardText;
         private ICodeObjectsService currentCodeObjectsService;
-        HotKey hotKey;
+        private HotKey hotKey;
 
         private CodeCopyService()
         {
@@ -63,7 +62,10 @@ namespace CodeGenerator
             {
                 CopyAndShow(service.GetWholeCode());
             }
-            catch { }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Exception");
+            }
         }
 
         public void CopyNextCodePart(ICodeObjectsService service)
@@ -78,11 +80,11 @@ namespace CodeGenerator
             {
                 string code = currentCodeObjectsService.GetNextCodePart(out isLastPart);
 
-                Copy(code);
+                CopyPart(code);
             }
             catch (Exception e)
             {
-                MessageBox.Show(Utils.GetTypeMessageAndStack(e));
+                MessageBox.Show(e.ToString());
 
                 isLastPart = true;
             }
@@ -105,31 +107,32 @@ namespace CodeGenerator
             currentCodeObjectsService = null;
         }
 
-        private void Copy(string text)
+        private void CopyPart(string text)
         {
             try
             {
                 Clipboard.SetText(text);
                 lastClipboardText = text;
             }
-            catch (Exception exc)
+            catch (Exception e)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(e.ToString(), "Exception");
             }
         }
 
-        private void CopyAndShow(string text)
+        public void CopyAndShow(string text)
         {
             try
             {
+                Stop();
                 Clipboard.SetText(text);
 
                 ShortText(ref text, 15);
                 MessageBox.Show(text);
             }
-            catch (Exception exc)
+            catch (Exception e)
             {
-                MessageBox.Show(exc.Message);
+                MessageBox.Show(e.ToString(), "Exception");
             }
         }
 

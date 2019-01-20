@@ -1,4 +1,5 @@
-﻿using CodeGenerator.DependencyProperty;
+﻿using CodeGenerator.BaseClass;
+using CodeGenerator.DependencyProperty;
 using CodeGenerator.Property;
 using CodeGenerator.Replace;
 using CodeGenerator.Simple;
@@ -14,6 +15,7 @@ namespace CodeGenerator
         private CodePropertiesService property;
         private SingletonService singleton;
         private CodeDependencyPropertiesService dependencyProperty;
+        private CodeBaseClassService baseClass;
 
         public SimpleService Simple
         {
@@ -75,6 +77,18 @@ namespace CodeGenerator
             }
         }
 
+        public CodeBaseClassService BaseClass
+        {
+            get { return baseClass; }
+            set
+            {
+                if (value == baseClass) return;
+
+                baseClass = value;
+                OnPropertyChanged(nameof(BaseClass));
+            }
+        }
+
         public ViewModel()
         {
             simple = new SimpleService();
@@ -82,6 +96,7 @@ namespace CodeGenerator
             property = new CodePropertiesService();
             singleton = new SingletonService();
             dependencyProperty = new CodeDependencyPropertiesService();
+            baseClass = new CodeBaseClassService();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

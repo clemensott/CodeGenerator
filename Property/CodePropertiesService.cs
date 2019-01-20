@@ -1,5 +1,4 @@
-﻿using StdOttWpfLib;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -7,12 +6,15 @@ namespace CodeGenerator.Property
 {
     public class CodePropertiesService : MultipleCodeObjectsService<Property>
     {
-        private const string notifyPropertyChangeText = ": INotifyPropertyChanged\r\n{\r\n\r\n" +
-            "public event PropertyChangedEventHandler PropertyChanged;\r\n\r\n" +
-            "private void OnPropertyChanged(string name)\r\n" +
-            "{\r\nPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));\r\n}";
+        public const string NotifyPropertyChangeText = ": INotifyPropertyChanged\r\n{\r\n\r\n" +
+            "\t\tpublic event PropertyChangedEventHandler PropertyChanged;\r\n" +
+            "\r\n" +
+            "\t\tprivate void OnPropertyChanged(string name)\r\n" +
+            "\t\t{\r\n" +
+            "\t\t\tPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));\r\n" +
+            "\t\t}";
 
-        public string NotifyPropertyChangeText { get { return notifyPropertyChangeText; } }
+        public IEnumerable<AccessModifier> AccessModifiers => Enum.GetValues(typeof(AccessModifier)).Cast<AccessModifier>();
 
         public CodePropertiesService()
         {
@@ -58,20 +60,47 @@ namespace CodeGenerator.Property
             //string nameWithLowerStart = char.ToLower(property.Name.First()) + property.Name.Remove(0, 1);
 
             //return string.Format("\r\nprivate {0} {1};", property.Datatype, nameWithLowerStart);
-            throw Utils.GetNotImplementedExeption(this, nameof(GetCodePart1));
+            throw new NotImplementedException();
         }
 
         private string GetPropertyCodePart2(Property property)
         {
-            string nameWithLowerStart = char.ToLower(property.Name.First()) + property.Name.Remove(0, 1);
-            string nameWithUpperStart = char.ToUpper(property.Name.First()) + property.Name.Remove(0, 1);
+            string nameLowerStart = char.ToLower(property.Name.First()) + property.Name.Remove(0, 1);
+            string nameUpperStart = char.ToUpper(property.Name.First()) + property.Name.Remove(0, 1);
             string propChange = !property.PropChange ? string.Empty :
-                string.Format("\r\nOnPropertyChanged(nameof({0}));", nameWithUpperStart);
+                string.Format("\r\nOnPropertyChanged(nameof({0}));", nameUpperStart);
+            string geterModifier = GetAccessModifierCode(property.GeterModifier);
+            string seterModifier = GetAccessModifierCode(property.GeterModifier);
 
-            string format = "\r\npublic {2} {3}\r\n{0}\r\nget {0} return {4}; {1}\r\n" +
-                "set \r\n{0}\r\nif(value == {4})return;\r\n\r\n{4} = value;{5}\r\n{1}\r\n{1}\r\n";
+            string format = "\r\npublic {2} {3}\r\n{0}\r\n{6}get {0} return {4}; {1}\r\n" +
+                "{7}set \r\n{0}\r\nif(value == {4})return;\r\n\r\n{4} = value;{5}\r\n{1}\r\n{1}\r\n";
 
-            return string.Format(format, "{", "}", property.Datatype, nameWithUpperStart, nameWithLowerStart, propChange);
+            return string.Format(format, "{", "}", property.Datatype, nameUpperStart,
+                nameLowerStart, propChange, geterModifier, seterModifier);
+        }
+
+        private string GetAccessModifierCode(AccessModifier modifier)
+        {
+            switch (modifier)
+            {
+                case AccessModifier.Default:
+                    return string.Empty;
+
+                case AccessModifier.Public:
+                    return "public ";
+
+                case AccessModifier.Internal:
+                    return "internal ";
+
+                case AccessModifier.Protected:
+                    return "protected ";
+
+                case AccessModifier.Private:
+                    return "private ";
+
+                default:
+                    throw new NotImplementedException();
+            }
         }
 
         protected override bool TryParse(string line, out Property property)
@@ -82,14 +111,24 @@ namespace CodeGenerator.Property
             {
                 string[] data = line.Split(' ');
 
+                if (data.Length < 2 || data.Length > 5) return false;
+
                 bool propChange = false;
                 string datatype = data[0], name = data[1];
+                AccessModifier geterModifier = AccessModifier.Default, seterModifier = AccessModifier.Default;
 
-                if (datatype.Length == 0 || name.Length == 0) return false;
-                if (data.Length > 2) propChange = ConvertToBoolean(data[2]);
+                if (data.Length > 2 && !TryConvertToBoolean(data[2], ref propChange)) return false;
+                if (data.Length > 3 && !TryConvertToAccessModifier(data[3], ref geterModifier)) return false;
+                if (data.Length > 4 && !TryConvertToAccessModifier(data[4], ref seterModifier)) return false;
 
-
-                property = new Property() { Datatype = datatype, Name = name, PropChange = propChange };
+                property = new Property()
+                {
+                    Datatype = datatype,
+                    Name = name,
+                    PropChange = propChange,
+                    GeterModifier = geterModifier,
+                    SeterModifier = seterModifier
+                };
                 return true;
             }
             catch { }
@@ -97,14 +136,62 @@ namespace CodeGenerator.Property
             return false;
         }
 
-        private bool ConvertToBoolean(string s)
+        private bool TryConvertToBoolean(string s, ref bool value)
         {
-            if (s == "0") return false;
-            else if (s == "1") return true;
-            else if (s.ToLower() == "false") return false;
-            else if (s.ToLower() == "true") return true;
+            switch (s.ToLower())
+            {
+                case "":
+                    break;
 
-            return false;
+                case "0":
+                case "false":
+                    value = false;
+                    break;
+
+                case "1":
+                case "true":
+                    value = true;
+                    break;
+
+                default:
+                    return false;
+            }
+
+            return true;
+        }
+
+        private bool TryConvertToAccessModifier(string s, ref AccessModifier value)
+        {
+            switch (s.ToLower())
+            {
+                case "":
+                    break;
+
+                case "default":
+                    value = AccessModifier.Default;
+                    break;
+
+                case "public":
+                    value = AccessModifier.Public;
+                    break;
+
+                case "internal":
+                    value = AccessModifier.Public;
+                    break;
+
+                case "protected":
+                    value = AccessModifier.Public;
+                    break;
+
+                case "private":
+                    value = AccessModifier.Public;
+                    break;
+
+                default:
+                    return false;
+            }
+
+            return true;
         }
     }
 }

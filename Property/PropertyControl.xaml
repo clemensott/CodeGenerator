@@ -4,35 +4,45 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeGenerator.Property"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <ObjectDataProvider x:Key="accessModifiers" MethodName="GetValues" 
+                            ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:AccessModifier"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </UserControl.Resources>
+
     <Grid>
-        <ScrollViewer>
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
 
-                <DataGrid ItemsSource="{Binding CodeObjects,Mode=OneWay}" AutoGenerateColumns="False">
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="Datatype" Binding="{Binding Datatype,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridTextColumn Header="Name" Binding="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                        <DataGridCheckBoxColumn Header="RaisePropertyChange" Binding="{Binding PropChange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
+        <DataGrid ItemsSource="{Binding CodeObjects,Mode=OneWay}" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Datatype" Binding="{Binding Datatype,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridTextColumn Header="Name" Binding="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="RaisePropertyChange" Binding="{Binding PropChange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridComboBoxColumn Header="Geter" ItemsSource="{Binding Source={StaticResource accessModifiers}}" 
+                                        SelectedItemBinding="{Binding GeterModifier,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridComboBoxColumn Header="Seter" ItemsSource="{Binding Source={StaticResource accessModifiers}}"
+                                        SelectedItemBinding="{Binding SeterModifier,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            </DataGrid.Columns>
+        </DataGrid>
 
-                <TextBox Grid.Row="1" Margin="5" AcceptsReturn="True" Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <TextBox Grid.Row="2" Text="{Binding NotifyPropertyChangeText,Mode=OneWay}" Margin="5" AcceptsReturn="True"/>
+        <TextBox Grid.Row="1" Margin="5" AcceptsReturn="True" Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
-                <StackPanel Grid.Row="3" Orientation="Horizontal">
-                    <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>
-                    <Button Content="Next" Margin="5" Width="100" Click="BtnNext_Click"/>
-                    <Button Content="Stop" Margin="5" Width="100" IsEnabled="{Binding IsCopying}" Click="BtnStop_Click"/>
-                </StackPanel>
-            </Grid>
-        </ScrollViewer>
+        <StackPanel Grid.Row="3" Orientation="Horizontal">
+            <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>
+            <Button Content="Next" Margin="5" Width="100" Click="BtnNext_Click"/>
+            <Button Content="Stop" Margin="5" Width="100" IsEnabled="{Binding IsCopying}" Click="BtnStop_Click"/>
+            <Button Content="Interface Impl" Margin="5" Width="100" Click="BtnInterfaceImpl_Click"/>
+        </StackPanel>
     </Grid>
 </UserControl>
