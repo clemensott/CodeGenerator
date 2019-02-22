@@ -57,11 +57,14 @@ namespace CodeGenerator.BaseClass
 
         public static int SetNextIndexOfInCode(this Code code, Bracket bracket)
         {
-            do
+            int level = code.Brackets.Count;
+
+            while (code.MoveNext())
             {
-                if (code.Peek == bracket) return code.Position;
+                if (level < code.Brackets.Count && code.Peek == bracket) return code.Position;
+
+                level = code.Brackets.Count;
             }
-            while (code.MoveNext());
 
             return -1;
         }

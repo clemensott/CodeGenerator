@@ -157,9 +157,11 @@ namespace CodeGenerator.BaseClass
                 format += "\t\t\t{4}get => @base;\r\n";
                 format += "\t\t\t{5}set\r\n";
                 format += "\t\t\t{0}\r\n";
-                format += "\t\t\t\tif(Base != null) Base.PropertyChanged += Base_PropetyChanged;\r\n";
-                format += "\t\t\t\tBase = value;\r\n";
-                format += "\t\t\t\tif(Base != null) Base.PropertyChanged -= Base_PropetyChanged;\r\n";
+                format += "\t\t\t\tif(value == @base) return;\r\n";
+                format += "\r\n";
+                format += "\t\t\t\tif(@base != null) @base.PropertyChanged -= Base_PropertyChanged;\r\n";
+                format += "\t\t\t\t@base = value;\r\n";
+                format += "\t\t\t\tif(@base != null) @base.PropertyChanged += Base_PropertyChanged;\r\n";
                 format += "\t\t\t{1}\r\n";
                 format += "\t\t{1}\r\n";
             }
@@ -286,7 +288,7 @@ namespace CodeGenerator.BaseClass
             BaseClassElement element;
             while (TryGetNextBaseClassElement(code, out element))
             {
-                if (element.IsStatic) continue;
+                if (element.IsStatic || string.IsNullOrWhiteSpace(element.DataType)) continue;
 
                 AccessModifier mod = element.AccessModifier;
 
@@ -536,7 +538,7 @@ namespace CodeGenerator.BaseClass
 
         private static bool IsVarNameBody(char c)
         {
-            return char.IsLetter(c) || char.IsDigit(c) || c == '_';
+            return char.IsLetter(c) || char.IsDigit(c) || c == '_' || c == '[' || c == ']' || c == '?';
         }
 
         public static (string name, string dataType) GetNameAndDataType(string header)
@@ -628,6 +630,8 @@ namespace CodeGenerator.BaseClass
                 else skip = true;
 
             } while (code.MoveNext());
+
+            if (type.Count(c => c == '[') != type.Count(c => c == ']')) throw new Exception();
 
             return (type, startIndex);
         }
