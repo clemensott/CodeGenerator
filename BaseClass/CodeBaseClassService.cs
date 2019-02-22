@@ -8,7 +8,15 @@ namespace CodeGenerator.BaseClass
     {
         private const string indexerFormat = "{3}{4} {5}[{6}] {0} {7} {8} {1}",
             propertyFormat = "{3}{4} {5} {0} {7} {8} {1}",
-            methodeFormat = "{3}{4} {5}({6}) => {7}";
+            methodeFormat = "{3}{4} {5}({6}) => {7}",
+            propertySeterWithINotifyPropertyChangedFormat = "\r\n" +
+            "\t\t\t{4}set\r\n" +
+            "\t\t\t{0}\r\n" +
+            "\t\t\t\tif (value == {2}.{3}) return;\r\n" +
+            "\r\n" +
+            "\t\t\t\t{2}.{3} = value;\r\n" +
+            "\t\t\t\tOnPropertyChanged(nameof({2}.{3}));\r\n" +
+            "\t\t\t{1}\r\n\t\t";
 
         public const string RaisePropertyChangedCode = "\r\n" +
             "\t\tprivate void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)\r\n" +
@@ -23,7 +31,7 @@ namespace CodeGenerator.BaseClass
             "\t\t\tPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));\r\n" +
             "\t\t}";
 
-        private bool implementINotifyPropertyChanged;
+        private bool implementINotifyPropertyChanged, implementINotifyPropertyChangedOnBase;
         private AccessModifier baseMainModifier, baseGeterModifier, baseSeterModifier;
         private string baseClassName, parseText, codeOnly;
 
@@ -36,6 +44,18 @@ namespace CodeGenerator.BaseClass
 
                 implementINotifyPropertyChanged = value;
                 OnPropertyChanged(nameof(ImplementINotifyPropertyChanged));
+            }
+        }
+
+        public bool ImplementINotifyPropertyChangedOnBase
+        {
+            get { return implementINotifyPropertyChangedOnBase; }
+            set
+            {
+                if (value == implementINotifyPropertyChangedOnBase) return;
+
+                implementINotifyPropertyChangedOnBase = value;
+                OnPropertyChanged(nameof(ImplementINotifyPropertyChangedOnBase));
             }
         }
 
@@ -150,7 +170,7 @@ namespace CodeGenerator.BaseClass
             string seterModifier = GetAccessModifierCode(BaseSeterModifier);
             string format;
 
-            if (ImplementINotifyPropertyChanged)
+            if (ImplementINotifyPropertyChanged && ImplementINotifyPropertyChangedOnBase)
             {
                 format = "\t\t{2}{3} Base\r\n";
                 format += "\t\t{0}\r\n";
@@ -203,7 +223,12 @@ namespace CodeGenerator.BaseClass
                     format = propertyFormat;
 
                     if (geterModifier != null) geter = string.Format("{0}get => {1}.{2}; ", geterModifier, baseName, name);
-                    if (seterModifier != null) seter = string.Format("{0}set => {1}.{2} = value; ", seterModifier, baseName, name);
+                    if (seterModifier != null)
+                    {
+                        seter = ImplementINotifyPropertyChanged ^ !ImplementINotifyPropertyChangedOnBase ?
+                            string.Format("{0}set => {1}.{2} = value; ", seterModifier, baseName, name) :
+                            string.Format(propertySeterWithINotifyPropertyChangedFormat, '{', '}', baseName, name, seterModifier);
+                    }
                     break;
 
                 case ElementType.Methode:

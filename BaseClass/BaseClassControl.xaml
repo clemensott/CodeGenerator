@@ -60,6 +60,10 @@
                 <CheckBox Content="Impl IPropChanged" VerticalAlignment="Center"
                           IsChecked="{Binding ImplementINotifyPropertyChanged,
                             Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <CheckBox Content="OnBase" VerticalAlignment="Center"
+                          IsEnabled="{Binding ImplementINotifyPropertyChanged}"
+                          IsChecked="{Binding ImplementINotifyPropertyChangedOnBase,
+                            Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </StackPanel>
 
             <TextBox Grid.Column="4" Margin="5,2" Text="{Binding BaseClassName}"/>
