@@ -8,7 +8,7 @@ namespace CodeGenerator.BaseClass
     {
         private const string indexerFormat = "{3}{4} {5}[{6}] {0} {7} {8} {1}",
             propertyFormat = "{3}{4} {5} {0} {7} {8} {1}",
-            methodeFormat = "{3}{4} {5}({6}) => {7}",
+            methodFormat = "{3}{4} {5}({6}) => {7}",
             propertySeterWithINotifyPropertyChangedFormat = "\r\n" +
             "\t\t\t{4}set\r\n" +
             "\t\t\t{0}\r\n" +
@@ -234,10 +234,10 @@ namespace CodeGenerator.BaseClass
                     break;
 
                 case ElementType.Method:
-                    format = methodeFormat;
+                    format = methodFormat;
 
-                    string methodeCall = string.Join(", ", e.Parameters.Select(p => p.Name));
-                    geter = string.Format("{0}.{1}({2});", baseName, name, methodeCall);
+                    string methodCall = string.Join(", ", e.Parameters.Select(p => p.Name));
+                    geter = string.Format("{0}.{1}({2});", baseName, name, methodCall);
                     break;
 
                 default:
@@ -530,29 +530,29 @@ namespace CodeGenerator.BaseClass
 
             Code code = new Code(header);
             int lastLevel = 0;
-            int methodeOpenIndex = -1;
+            int methodOpenIndex = -1;
             int indexerOpenIndex = -1;
 
             do
             {
                 if (lastLevel == 0 && code.Brackets.Count == 1)
                 {
-                    if (code.Peek == Bracket.Round) methodeOpenIndex = code.Position;
+                    if (code.Peek == Bracket.Round) methodOpenIndex = code.Position;
                     else if (code.Peek == Bracket.Square) indexerOpenIndex = code.Position;
                 }
 
                 lastLevel = code.Brackets.Count;
             } while (code.MoveNext());
 
-            int methodeCloseIndex = header.LastIndexOf(')');
+            int methodCloseIndex = header.LastIndexOf(')');
             int indexerCloseIndex = header.LastIndexOf(']');
-            int maxCloseIndex = Math.Max(methodeCloseIndex, indexerCloseIndex);
+            int maxCloseIndex = Math.Max(methodCloseIndex, indexerCloseIndex);
 
             if (maxCloseIndex == -1) return header.Any(IsVarNameBegin) ? (ElementType.Property, -1, -1) : throw new Exception();
             else if (header.Substring(maxCloseIndex).Any(IsVarNameBegin)) return (ElementType.Property, -1, -1);
 
-            return methodeCloseIndex > indexerCloseIndex ?
-                (ElementType.Method, methodeOpenIndex, methodeCloseIndex - methodeOpenIndex) :
+            return methodCloseIndex > indexerCloseIndex ?
+                (ElementType.Method, methodOpenIndex, methodCloseIndex - methodOpenIndex) :
                 (ElementType.Indexer, indexerOpenIndex, indexerCloseIndex - indexerOpenIndex);
         }
 
