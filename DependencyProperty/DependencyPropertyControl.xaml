@@ -6,26 +6,40 @@
              xmlns:local="clr-namespace:CodeGenerator.DependencyProperty"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="400">
+    
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <DataGrid ItemsSource="{Binding CodeObjects,Mode=OneWay}" AutoGenerateColumns="False"
-                  CanUserAddRows="True" CanUserDeleteRows="True">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <CheckBox Grid.Column="0" Content="ForWpf" Margin="3"
+                      IsChecked="{Binding ForWpf,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox Grid.Column="1" Margin="3" Text="{Binding ControlType,Mode=TwoWay}"/>
+        </Grid>
+
+        <DataGrid Grid.Row="1" ItemsSource="{Binding CodeObjects,Mode=OneWay}" 
+                  AutoGenerateColumns="False" CanUserAddRows="True" CanUserDeleteRows="True">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="PropertyType" Binding="{Binding PropertyType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridTextColumn Header="ControlType" Binding="{Binding ControlType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Body" Binding="{Binding WithBody,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Ignore" Binding="{Binding IgnoreChanges,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DefaultValue" Binding="{Binding DefaultValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBox Grid.Row="1" Margin="5" AcceptsReturn="True" Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2" Margin="5" AcceptsReturn="True" Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="4" Orientation="Horizontal">
             <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>
             <Button Content="Next" Margin="5" Width="100" Click="BtnNext_Click"/>
             <Button Content="Stop" Margin="5" Width="100" IsEnabled="{Binding IsCopying}" Click="BtnStop_Click"/>
