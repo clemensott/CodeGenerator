@@ -35,7 +35,7 @@ namespace CodeGenerator.Simple
             switch (simple.GetCommend().ToLower())
             {
                 case "sgt":
-                    return GetSingelton(simple.GetArgs());
+                    return GetSingleton(simple.GetArgs());
 
                 case "xcd":
                     return GetXmalColumnDefinition(simple.GetArgs());
@@ -47,17 +47,29 @@ namespace CodeGenerator.Simple
             throw new ArgumentException("Commend \"{0}\" is not implemented,", simple.GetCommend());
         }
 
-        private string GetSingelton(string[] args)
+        public string GetSingleton(string[] args)
         {
-            string format = "private static {0} instance;\r\n\r\n";
-            format += "public static {0} Current\r\n{1}\r\nget\r\n{1}\r\n";
-            format += "if (instance == null) instance=new {0}();\r\n\r\nreturn instance;";
-            format += "\r\n{2}\r\n{2}";
+            string format = "\r\n";
+            format += "\t\tprivate static {2} instance;\r\n";
+            format += "\r\n";
+            format += "\t\tpublic static {2} Current\r\n";
+            format += "\t\t{0}\r\n";
+            format += "\t\t\tget\r\n";
+            format += "\t\t\t{0}\r\n";
+            format += "\t\t\t\tif (instance == null) instance = new {2}();\r\n";
+            format += "\r\n";
+            format += "\t\t\t\treturn instance;\r\n";
+            format += "\t\t\t{1}\r\n";
+            format += "\t\t{1}\r\n";
+            format += "\r\n";
+            format += "\t\tprivate {2}()\r\n";
+            format += "\t\t{0}\r\n";
+            format += "\t\t{1}\r\n";
 
-            return string.Format(format, args[0], "{", "}");
+            return string.Format(format, "{", "}", args[0]);
         }
 
-        private string GetXmalColumnDefinition(string[] args)
+        private static string GetXmalColumnDefinition(string[] args)
         {
             IEnumerable<string> columnWidths = args.SelectMany(ToXamlGridLengthTexts);
 
@@ -81,7 +93,7 @@ namespace CodeGenerator.Simple
             return code;
         }
 
-        private IEnumerable<string> ToXamlGridLengthTexts(string arg)
+        private static IEnumerable<string> ToXamlGridLengthTexts(string arg)
         {
             int i = 0, count;
             string countString = string.Empty;
