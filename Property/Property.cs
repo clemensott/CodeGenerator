@@ -6,7 +6,7 @@ namespace CodeGenerator.Property
 
     public class Property : INotifyPropertyChanged
     {
-        private bool propChange;
+        private bool propChange, withBody;
         private string datatype, name;
         private AccessModifier geterModifier, seterModifier;
 
@@ -19,6 +19,18 @@ namespace CodeGenerator.Property
 
                 propChange = value;
                 OnPropertyChanged(nameof(PropChange));
+            }
+        }
+
+        public bool WithBody
+        {
+            get { return withBody; }
+            set
+            {
+                if (value == withBody) return;
+
+                withBody = value;
+                OnPropertyChanged(nameof(WithBody));
             }
         }
 

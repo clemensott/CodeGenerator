@@ -33,11 +33,12 @@ namespace CodeGenerator.Property
 
         private string GetCodePart1(Func<Property, string> func)
         {
-            string code = "\r\n";
+            string code = "";
 
             foreach (var propertyGroup in CodeObjects.GroupBy(p => p.Datatype))
             {
-                code += "   private " + propertyGroup.Key;
+                code += "\r\n";
+                code += "\t\tprivate " + propertyGroup.Key;
 
                 int i = 0;
                 foreach (Property property in propertyGroup)
@@ -48,38 +49,45 @@ namespace CodeGenerator.Property
                     i++;
 
                     if (i < propertyGroup.Count()) code += ",";
-                    else code += ";\r\n";
+                    else code += ";";
                 }
             }
 
             return code;
         }
 
-        private string GetPropertyCodePart1(Property property)
+        private static string GetPropertyCodePart1(Property property)
         {
-            //string nameWithLowerStart = char.ToLower(property.Name.First()) + property.Name.Remove(0, 1);
-
-            //return string.Format("\r\nprivate {0} {1};", property.Datatype, nameWithLowerStart);
             throw new NotImplementedException();
         }
 
-        private string GetPropertyCodePart2(Property property)
+        private static string GetPropertyCodePart2(Property property)
         {
             string nameLowerStart = char.ToLower(property.Name.First()) + property.Name.Remove(0, 1);
             string nameUpperStart = char.ToUpper(property.Name.First()) + property.Name.Remove(0, 1);
             string propChange = !property.PropChange ? string.Empty :
-                string.Format("\r\nOnPropertyChanged(nameof({0}));", nameUpperStart);
+                string.Format("\t\t\t\tOnPropertyChanged(nameof({0}));\r\n", nameUpperStart);
             string geterModifier = GetAccessModifierCode(property.GeterModifier);
-            string seterModifier = GetAccessModifierCode(property.GeterModifier);
+            string seterModifier = GetAccessModifierCode(property.SeterModifier);
 
-            string format = "\r\npublic {2} {3}\r\n{0}\r\n{6}get {0} return {4}; {1}\r\n" +
-                "{7}set \r\n{0}\r\nif(value == {4})return;\r\n\r\n{4} = value;{5}\r\n{1}\r\n{1}\r\n";
+            string format = "\r\n";
+            format += "\t\tpublic {2} {3}\r\n";
+            format += "\t\t{0}\r\n";
+            format += property.WithBody ? "\t\t\t{6}get {0} return {4}; {1}\r\n" : "\t\t\t{6}get => {4};\r\n";
+            format += "\t\t\t{7}set \r\n";
+            format += "\t\t\t{0}\r\n";
+            format += "\t\t\t\tif (value == {4}) return;\r\n";
+            format += "\r\n";
+            format += "\t\t\t\t{4} = value;\r\n";
+            format += "{5}";
+            format += "\t\t\t{1}\r\n";
+            format += "\t\t{1}\r\n";
 
             return string.Format(format, "{", "}", property.Datatype, nameUpperStart,
                 nameLowerStart, propChange, geterModifier, seterModifier);
         }
 
-        private string GetAccessModifierCode(AccessModifier modifier)
+        private static string GetAccessModifierCode(AccessModifier modifier)
         {
             switch (modifier)
             {
@@ -113,19 +121,21 @@ namespace CodeGenerator.Property
 
                 if (data.Length < 2 || data.Length > 5) return false;
 
-                bool propChange = false;
+                bool propChange = true, withBody = false;
                 string datatype = data[0], name = data[1];
                 AccessModifier geterModifier = AccessModifier.Default, seterModifier = AccessModifier.Default;
 
                 if (data.Length > 2 && !TryConvertToBoolean(data[2], ref propChange)) return false;
-                if (data.Length > 3 && !TryConvertToAccessModifier(data[3], ref geterModifier)) return false;
-                if (data.Length > 4 && !TryConvertToAccessModifier(data[4], ref seterModifier)) return false;
+                if (data.Length > 3 && !TryConvertToBoolean(data[3], ref withBody)) return false;
+                if (data.Length > 4 && !TryConvertToAccessModifier(data[4], ref geterModifier)) return false;
+                if (data.Length > 5 && !TryConvertToAccessModifier(data[5], ref seterModifier)) return false;
 
                 property = new Property()
                 {
                     Datatype = datatype,
                     Name = name,
                     PropChange = propChange,
+                    WithBody = withBody,
                     GeterModifier = geterModifier,
                     SeterModifier = seterModifier
                 };
@@ -136,7 +146,7 @@ namespace CodeGenerator.Property
             return false;
         }
 
-        private bool TryConvertToBoolean(string s, ref bool value)
+        private static bool TryConvertToBoolean(string s, ref bool value)
         {
             switch (s.ToLower())
             {
@@ -160,36 +170,14 @@ namespace CodeGenerator.Property
             return true;
         }
 
-        private bool TryConvertToAccessModifier(string s, ref AccessModifier value)
+        private static bool TryConvertToAccessModifier(string s, ref AccessModifier value)
         {
-            switch (s.ToLower())
-            {
-                case "":
-                    break;
-
-                case "default":
-                    value = AccessModifier.Default;
-                    break;
-
-                case "public":
-                    value = AccessModifier.Public;
-                    break;
-
-                case "internal":
-                    value = AccessModifier.Public;
-                    break;
-
-                case "protected":
-                    value = AccessModifier.Public;
-                    break;
-
-                case "private":
-                    value = AccessModifier.Public;
-                    break;
-
-                default:
-                    return false;
-            }
+            if ("default".StartsWith(s.ToLower())) value = AccessModifier.Default;
+            else if ("public".StartsWith(s.ToLower())) value = AccessModifier.Public;
+            else if ("internal".StartsWith(s.ToLower())) value = AccessModifier.Internal;
+            else if ("protected".StartsWith(s.ToLower())) value = AccessModifier.Protected;
+            else if ("private".StartsWith(s.ToLower())) value = AccessModifier.Private;
+            else if (s.Length != 0) return false;
 
             return true;
         }

@@ -28,7 +28,8 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Datatype" Binding="{Binding Datatype,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridCheckBoxColumn Header="RaisePropertyChange" Binding="{Binding PropChange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Raise" Binding="{Binding PropChange,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Body" Binding="{Binding WithBody,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridComboBoxColumn Header="Geter" ItemsSource="{Binding Source={StaticResource accessModifiers}}" 
                                         SelectedItemBinding="{Binding GeterModifier,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridComboBoxColumn Header="Seter" ItemsSource="{Binding Source={StaticResource accessModifiers}}"
