@@ -8,7 +8,7 @@ namespace CodeGenerator.Singleton
     /// </summary>
     public partial class SingletonControl : UserControl
     {
-        public SingletonService ViewModel { get { return DataContext as SingletonService; } }
+        public SingletonService ViewModel { get { return (SingletonService) DataContext; } }
 
         public SingletonControl()
         {
@@ -17,12 +17,12 @@ namespace CodeGenerator.Singleton
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            CodeCopyService.Current.CopyWholeCode(DataContext as SingletonService);
+            CodeCopyService.Current.CopyWholeCode(ViewModel);
         }
 
         private void BtnNext_Click(object sender, RoutedEventArgs e)
         {
-            CodeCopyService.Current.CopyNextCodePart(DataContext as SingletonService);
+            CodeCopyService.Current.CopyNextCodePart(ViewModel);
         }
 
         private void BtnStop_Click(object sender, RoutedEventArgs e)
