@@ -13,7 +13,7 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <TextBox Margin="5" TextAlignment="Center" KeyDown="TextBox_KeyDown"
+        <TextBox Margin="5" Name="tbxParse" TextAlignment="Center" KeyDown="TextBox_KeyDown"
                  Text="{Binding CodeObject.CompleteCommend,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Row="1" Orientation="Horizontal">

@@ -20,5 +20,10 @@ namespace CodeGenerator.Simple
         {
             CodeCopyService.Current.CopyWholeCode(DataContext as SimpleService);
         }
+
+        public void FocusOnMainControl()
+        {
+            tbxParse.Focus();
+        }
     }
 }

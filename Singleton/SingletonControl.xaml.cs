@@ -29,5 +29,10 @@ namespace CodeGenerator.Singleton
         {
             CodeCopyService.Current.Stop();
         }
+
+        public void FocusOnMainControl()
+        {
+            tbxParse.Focus();
+        }
     }
 }

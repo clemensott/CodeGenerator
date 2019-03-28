@@ -17,12 +17,12 @@ namespace CodeGenerator.Property
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
         {
-            CodeCopyService.Current.CopyWholeCode(DataContext as CodePropertiesService);
+            CodeCopyService.Current.CopyWholeCode(ViewModel);
         }
 
         private void BtnNext_Click(object sender, RoutedEventArgs e)
         {
-            CodeCopyService.Current.CopyNextCodePart(DataContext as CodePropertiesService);
+            CodeCopyService.Current.CopyNextCodePart(ViewModel);
         }
 
         private void BtnStop_Click(object sender, RoutedEventArgs e)
@@ -33,6 +33,11 @@ namespace CodeGenerator.Property
         private void BtnInterfaceImpl_Click(object sender, RoutedEventArgs e)
         {
             CodeCopyService.Current.CopyAndShow(CodePropertiesService.NotifyPropertyChangeText);
+        }
+
+        public void FocusOnMainControl()
+        {
+            tbxParse.Focus();
         }
     }
 }

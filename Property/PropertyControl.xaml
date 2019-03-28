@@ -37,9 +37,10 @@
             </DataGrid.Columns>
         </DataGrid>
 
-        <TextBox Grid.Row="1" Margin="5" AcceptsReturn="True" Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="1" Name="tbxParse" Margin="5" AcceptsReturn="True"
+                 Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
-        <StackPanel Grid.Row="3" Orientation="Horizontal">
+        <StackPanel Grid.Row="2" Orientation="Horizontal">
             <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>
             <Button Content="Next" Margin="5" Width="100" Click="BtnNext_Click"/>
             <Button Content="Stop" Margin="5" Width="100" IsEnabled="{Binding IsCopying}" Click="BtnStop_Click"/>

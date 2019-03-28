@@ -42,5 +42,10 @@ namespace CodeGenerator.Replace
         {
             CodeCopyService.Current.Stop();
         }
+
+        public void FocusOnMainControl()
+        {
+            tbxParseText.Focus();
+        }
     }
 }

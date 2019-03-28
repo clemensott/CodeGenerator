@@ -73,7 +73,8 @@
                   AutoGenerateColumns="True" AutoGeneratingColumn="DataGrid_AutoGeneratingColumn">
         </DataGrid>
 
-        <TextBox Grid.Row="2" AcceptsReturn="True" Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Grid.Row="2" Name="tbxParse" AcceptsReturn="True" 
+                 Text="{Binding ParseText,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
 
         <StackPanel Grid.Row="3" Orientation="Horizontal">
             <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>

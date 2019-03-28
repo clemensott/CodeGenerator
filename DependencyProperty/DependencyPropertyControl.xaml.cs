@@ -28,5 +28,10 @@ namespace CodeGenerator.DependencyProperty
         {
             CodeCopyService.Current.Stop();
         }
+
+        public void FocusOnMainControl()
+        {
+            tbxParse.Focus();
+        }
     }
 }

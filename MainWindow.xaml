@@ -14,23 +14,29 @@
         Title="Codegenerator" Height="600" Width="725">
 
     <TabControl>
-        <TabItem Header="Simple" DataContext="{Binding Simple,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-            <sp:SimpleControl />
+        <TabItem Header="Simple" Name="tbcSimple" 
+                 DataContext="{Binding Simple,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <sp:SimpleControl x:Name="simpleControl"/>
         </TabItem>
-        <TabItem Header="Replace" DataContext="{Binding Replace,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-            <rp:ReplaceControl />
+        <TabItem Header="Replace" Name="tbcReplace"
+                 DataContext="{Binding Replace,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <rp:ReplaceControl x:Name="replaceControl"/>
         </TabItem>
-        <TabItem Header="Property" DataContext="{Binding Property,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-            <pp:PropertyControl />
+        <TabItem Header="Property" Name="tbcProperty"
+                 DataContext="{Binding Property,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <pp:PropertyControl x:Name="propertyControl"/>
         </TabItem>
-        <TabItem Header="Singleton" DataContext="{Binding Singleton,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-            <st:SingletonControl />
+        <TabItem Header="DependencyProperty" Name="tbcDependencyProperty"
+                 DataContext="{Binding DependencyProperty,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <dp:DependencyPropertyControl x:Name="dependencyPropertyControl"/>
         </TabItem>
-        <TabItem Header="DependencyProperty" DataContext="{Binding DependencyProperty,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-            <dp:DependencyPropertyControl />
+        <TabItem Header="Singleton" Name="tbcSingleton"
+                 DataContext="{Binding Singleton,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <st:SingletonControl x:Name="singletonControl"/>
         </TabItem>
-        <TabItem Header="BaseClass" DataContext="{Binding BaseClass,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-            <bc:BaseClassControl />
+        <TabItem Header="BaseClass" Name="tbcBaseClass"
+                 DataContext="{Binding BaseClass,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <bc:BaseClassControl x:Name="baseClassControl"/>
         </TabItem>
     </TabControl>
 </Window>

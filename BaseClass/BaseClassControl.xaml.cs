@@ -45,5 +45,10 @@ namespace CodeGenerator.BaseClass
                 binding.Converter = new ParameterConverter();
             }
         }
+
+        public void FocusOnMainControl()
+        {
+            tbxParse.Focus();
+        }
     }
 }
