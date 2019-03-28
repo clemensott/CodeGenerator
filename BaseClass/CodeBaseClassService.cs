@@ -233,7 +233,7 @@ namespace CodeGenerator.BaseClass
                     }
                     break;
 
-                case ElementType.Methode:
+                case ElementType.Method:
                     format = methodeFormat;
 
                     string methodeCall = string.Join(", ", e.Parameters.Select(p => p.Name));
@@ -363,7 +363,7 @@ namespace CodeGenerator.BaseClass
                     header = header.Remove(parameterIndex);
                     break;
 
-                case ElementType.Methode:
+                case ElementType.Method:
                     parameters = GetParameters(header.Substring(parameterIndex + 1, parameterLength - 1)).ToArray();
                     header = header.Remove(parameterIndex);
                     break;
@@ -552,7 +552,7 @@ namespace CodeGenerator.BaseClass
             else if (header.Substring(maxCloseIndex).Any(IsVarNameBegin)) return (ElementType.Property, -1, -1);
 
             return methodeCloseIndex > indexerCloseIndex ?
-                (ElementType.Methode, methodeOpenIndex, methodeCloseIndex - methodeOpenIndex) :
+                (ElementType.Method, methodeOpenIndex, methodeCloseIndex - methodeOpenIndex) :
                 (ElementType.Indexer, indexerOpenIndex, indexerCloseIndex - indexerOpenIndex);
         }
 

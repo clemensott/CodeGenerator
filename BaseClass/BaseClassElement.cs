@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CodeGenerator.BaseClass
 {
-    public enum ElementType { Indexer, Property, Methode }
+    public enum ElementType { Indexer, Property, Method }
 
     public enum AccessModifier { Default, Public, Internal, Protected, Private }
 

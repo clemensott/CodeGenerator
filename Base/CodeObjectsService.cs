@@ -26,9 +26,9 @@ namespace CodeGenerator
 
         public bool IsCopying { get { return codePartsIndex >= 0; } }
 
-        public ObservableCollection<T> CodeObjects { get; private set; }
+        public ObservableCollection<T> CodeObjects { get; }
 
-        public CodeObjectsService()
+        protected CodeObjectsService()
         {
             CodePartsIndex = -1;
 

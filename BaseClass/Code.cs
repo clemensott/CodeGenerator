@@ -34,7 +34,7 @@ namespace CodeGenerator.BaseClass
 
         public char Current => this[Position];
 
-        public Stack<Bracket> Brackets { get; private set; }
+        public Stack<Bracket> Brackets { get; }
 
         public Bracket? Peek => Brackets.Count > 0 ? (Bracket?)Brackets.Peek() : null;
 
@@ -82,9 +82,16 @@ namespace CodeGenerator.BaseClass
                 wasInCode = IsInCode;
             }
 
-            code = code.Replace("//", "").Replace("/*", "").Replace("*/", "")
-                .Replace("\r", " ").Replace("\n", " ").Replace("=>", " => ").Replace(";", "; ")
-                .Replace("@\"\"", "\"\"").Replace("{", " { ").Replace("}", " } ");
+            code = code.Replace("//", "")
+                .Replace("/*", "")
+                .Replace("*/", "")
+                .Replace("\r", " ")
+                .Replace("\n", " ")
+                .Replace("=>", " => ")
+                .Replace(";", "; ")
+                .Replace("@\"\"", "\"\"")
+                .Replace("{", " { ")
+                .Replace("}", " } ");
 
             code = ' ' + code + ' ';
 
@@ -131,14 +138,6 @@ namespace CodeGenerator.BaseClass
                 case ']':
                     if (IsInCode && Brackets.Pop() != Bracket.Square) throw new Exception();
                     break;
-
-                //case '<':
-                //    if (IsInCode) Brackets.Push(Bracket.Than);
-                //    break;
-
-                //case '>':
-                //    if (IsInCode && Brackets.Pop() != Bracket.Than) throw new Exception();
-                //    break;
 
                 case '\"':
                     if (Peek == Bracket.NoEscapingQuote || Peek == Bracket.Quote) Brackets.Pop();

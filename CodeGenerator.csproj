@@ -69,7 +69,7 @@
     <Compile Include="BaseClass\BaseClassElement.cs" />
     <Compile Include="BaseClass\Code.cs" />
     <Compile Include="BaseClass\CodeBaseClassService.cs" />
-    <Compile Include="BaseClass\CodeExtention.cs" />
+    <Compile Include="BaseClass\CodeExtension.cs" />
     <Compile Include="BaseClass\Parameter.cs" />
     <Compile Include="BaseClass\ParameterConverter.cs" />
     <Compile Include="Base\CodeObjectsService.cs" />

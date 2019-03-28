@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CodeGenerator.BaseClass
+﻿namespace CodeGenerator.BaseClass
 {
-    static class CodeExtention
+    static class CodeExtension
     {
         public static int SetNextIndexOf(this Code code, char c)
         {
