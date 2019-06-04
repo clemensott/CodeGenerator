@@ -119,7 +119,7 @@ namespace CodeGenerator.Property
             {
                 string[] data = line.Split(' ');
 
-                if (data.Length < 2 || data.Length > 5) return false;
+                if (data.Length < 2 || data.Length > 6) return false;
 
                 bool propChange = true, withBody = false;
                 string datatype = data[0], name = data[1];
