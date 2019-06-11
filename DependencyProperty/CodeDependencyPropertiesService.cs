@@ -35,7 +35,7 @@ namespace CodeGenerator.DependencyProperty
 
         protected override bool TryParse(string dataText, out DependencyProperty dependencyProperty)
         {
-            dataText = dataText.Replace("  ", " ");
+            //dataText = dataText.Replace("  ", " ");
             dependencyProperty = null;
 
             try
@@ -164,6 +164,7 @@ namespace CodeGenerator.DependencyProperty
                 f += "\r\n";
             }
 
+            pcc = string.Format(pcc, "{", "}", dp.Name);
             return string.Format(f, "{", "}", dp.Name, dp.PropertyType, ControlType, defaultValue, pcc);
         }
 
