@@ -62,7 +62,7 @@ namespace CodeGenerator.Simple
             string format = "\r\n";
             format += "\t\tprivate static {2} instance;\r\n";
             format += "\r\n";
-            format += "\t\tpublic static {2} Current\r\n";
+            format += "\t\tpublic static {2} {3}\r\n";
             format += "\t\t{0}\r\n";
             format += "\t\t\tget\r\n";
             format += "\t\t\t{0}\r\n";
@@ -76,7 +76,10 @@ namespace CodeGenerator.Simple
             format += "\t\t{0}\r\n";
             format += "\t\t{1}\r\n";
 
-            return string.Format(format, "{", "}", args[0]);
+            string className = args[0];
+            string propertyName = args.Length < 2 ? "Current" : args[1];
+
+            return string.Format(format, "{", "}", className, propertyName);
         }
 
         private static string GetXmalColumnDefinition(string[] args)
