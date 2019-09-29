@@ -31,7 +31,7 @@ namespace CodeGenerator
             timer.Interval = TimeSpan.FromMilliseconds(100);
             timer.Tick += Timer_Tick;
 
-            hotKey = new HotKey(Key.B, KeyModifier.Ctrl);
+            hotKey = HotKey.GetInstance(Key.B, KeyModifier.Ctrl);
             hotKey.Pressed += HotKey_Pressed;
         }
 
