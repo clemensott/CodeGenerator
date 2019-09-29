@@ -10,6 +10,7 @@
         xmlns:st="clr-namespace:CodeGenerator.Singleton"
         xmlns:dp="clr-namespace:CodeGenerator.DependencyProperty"
         xmlns:bc="clr-namespace:CodeGenerator.BaseClass"
+        xmlns:sn="clr-namespace:CodeGenerator.Snippets"
         mc:Ignorable="d"
         Title="Codegenerator" Height="600" Width="725">
 
@@ -37,6 +38,10 @@
         <TabItem Header="BaseClass" Name="tbcBaseClass"
                  DataContext="{Binding BaseClass,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
             <bc:BaseClassControl x:Name="baseClassControl"/>
+        </TabItem>
+        <TabItem Header="Snippets" Name="tbcSnippets"
+                 DataContext="{Binding Snippets,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
+            <sn:SnippetsControl x:Name="snippetControl"/>
         </TabItem>
     </TabControl>
 </Window>

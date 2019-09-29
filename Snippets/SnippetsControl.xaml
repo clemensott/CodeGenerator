@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="CodeGenerator.Snippets.SnippetsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:CodeGenerator.Snippets"
+             xmlns:spi="clr-namespace:StdOttFramework.Converters.Specialized;assembly=StdOttFrameworkLib"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <sys:Int32 x:Key="one">1</sys:Int32>
+        <spi:CollapsedVisibleConverter x:Key="colCon" CompareValue="{StaticResource one}"/>
+    </UserControl.Resources>
+
+    <ScrollViewer>
+        <ItemsControl ItemsSource="{Binding}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Margin="5">
+                        <TextBlock Margin="3" FontWeight="Bold" Text="{Binding Name,Mode=OneTime}"/>
+                        <TextBox AcceptsReturn="True" HorizontalAlignment="Stretch"
+                                 IsReadOnly="True" Text="{Binding CodeObject.WholeCode,Mode=OneTime}"/>
+
+                        <StackPanel Orientation="Horizontal">
+                            <Button Content="Copy" Margin="5" Width="100" Click="BtnCopy_Click"/>
+                            <Button Content="Next" Margin="5" Width="100" Click="BtnNext_Click"
+                                    Visibility="{Binding CodeObjects.Count,Converter={StaticResource colCon}}"/>
+                            <Button Content="Stop" Margin="5" Width="100" 
+                                    IsEnabled="{Binding IsCopying,Mode=OneWay}" Click="BtnStop_Click"
+                                    Visibility="{Binding CodeObjects.Count,Converter={StaticResource colCon}}"/>
+                        </StackPanel>
+                    </StackPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </ScrollViewer>
+</UserControl>

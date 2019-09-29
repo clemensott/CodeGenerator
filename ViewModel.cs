@@ -4,7 +4,10 @@ using CodeGenerator.Property;
 using CodeGenerator.Replace;
 using CodeGenerator.Simple;
 using CodeGenerator.Singleton;
+using CodeGenerator.Snippets;
+using System;
 using System.ComponentModel;
+using System.Windows;
 
 namespace CodeGenerator
 {
@@ -16,6 +19,7 @@ namespace CodeGenerator
         private SingletonService singleton;
         private CodeDependencyPropertiesService dependencyProperty;
         private CodeBaseClassService baseClass;
+        private SnippetServices snippets;
 
         public SimpleService Simple
         {
@@ -89,6 +93,18 @@ namespace CodeGenerator
             }
         }
 
+        public SnippetServices Snippets
+        {
+            get => snippets;
+            set
+            {
+                if (value == snippets) return;
+
+                snippets = value;
+                OnPropertyChanged(nameof(Snippets));
+            }
+        }
+
         public ViewModel()
         {
             simple = new SimpleService();
@@ -97,6 +113,15 @@ namespace CodeGenerator
             singleton = new SingletonService();
             dependencyProperty = new CodeDependencyPropertiesService();
             baseClass = new CodeBaseClassService();
+
+            try
+            {
+                snippets = new SnippetServices();
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show(e.ToString(), "Exception on new SnippetServices()");
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

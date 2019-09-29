@@ -98,6 +98,12 @@
       <DependentUpon>SimpleControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Simple\SimpleService.cs" />
+    <Compile Include="Snippets\SnippetsControl.xaml.cs">
+      <DependentUpon>SnippetsControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Snippets\SnippetServices.cs" />
+    <Compile Include="Snippets\Snippet.cs" />
+    <Compile Include="Snippets\SnippetService.cs" />
     <Compile Include="Singleton\Singleton.cs" />
     <Compile Include="Singleton\SingletonControl.xaml.cs">
       <DependentUpon>SingletonControl.xaml</DependentUpon>
@@ -137,6 +143,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Singleton\SingletonControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Snippets\SnippetsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -181,6 +191,7 @@
       <Name>StdOttStandardLib</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

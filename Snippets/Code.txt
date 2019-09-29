@@ -1,0 +1,56 @@
+#snippet
+#name
+INotifyPropertyChanged
+#endname
+#code
+ : INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+#endcode
+#part
+ : INotifyPropertyChanged
+#endpart
+#part
+
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string name)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+#endpart
+#endsnippet
+
+
+#snippet
+#name
+ListBoxItemStyle
+#endname
+#code
+        <ListBox.ItemContainerStyle>
+            <Style TargetType="ListBoxItem">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            </Style>
+        </ListBox.ItemContainerStyle>
+#endcode
+#endsnippet
+
+
+#snippet
+#name
+ContentPresenterStyle
+#endname
+#code
+        <ItemsControl.ItemContainerStyle>
+            <Style TargetType="ContentPresenter">
+                <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            </Style>
+        </ItemsControl.ItemContainerStyle>
+#endcode
+#endsnippet
