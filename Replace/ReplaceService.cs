@@ -54,7 +54,6 @@ namespace CodeGenerator.Replace
                 yield return new Func<Func<Replace, string>, string>((f) =>
                 {
                     int index = i;
-                    System.Diagnostics.Debug.WriteLine("index: " + index + "; index2: " + index2);
                     return GetReplacedText(index2);
                 });
             }

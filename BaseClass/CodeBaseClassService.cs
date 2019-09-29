@@ -113,7 +113,6 @@ namespace CodeGenerator.BaseClass
             set
             {
                 Code code = new Code(value);
-                System.Diagnostics.Debug.WriteLine(code.Source);
 
                 if (code.Source == codeOnly) return;
 
