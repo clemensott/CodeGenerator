@@ -6,9 +6,19 @@ namespace CodeGenerator.Simple
 {
     public class SimpleService : SingleCodeObjectService<Simple>
     {
+        public string Commands { get; }
+
         public SimpleService()
         {
+            Commands = string.Join("\r\n", GetCommands());
             CodeObject = new Simple();
+        }
+
+        private static IEnumerable<string> GetCommands()
+        {
+            yield return "sgt (Singleton): <className> [<PropertyName>]";
+            yield return "xcd (XAML ColumnDefinitions): [<No>x]<Value(*|a|No)> [...]";
+            yield return "xrd (XAML RowDefinitions): [<No>x]<Value(*|a|No)> [...]";
         }
 
         protected override bool TryParse(string line, out Simple simple)

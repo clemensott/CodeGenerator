@@ -10,6 +10,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
@@ -19,5 +20,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal">
             <Button Content="Generate" Margin="5" Width="100" Click="BtnGenerate_Click"/>
         </StackPanel>
+
+        <TextBlock Grid.Row="2" Margin="5" Text="{Binding Commands}"/>
     </Grid>
 </UserControl>
