@@ -73,7 +73,7 @@ namespace CodeGenerator
 
         private IEnumerable<string> GetCodeParts(bool getWhole)
         {
-            Func<T, string>[] codeGenerators = GetObjectsCodeGenerators(true).ToArray();
+            Func<T, string>[] codeGenerators = GetObjectsCodeGenerators(getWhole).ToArray();
             Func<Func<T, string>, string>[] partGenerators = GetCodePartGenerators(getWhole).ToArray();
 
             for (int i = 0; i < codeGenerators.Length || i < partGenerators.Length; i++)
