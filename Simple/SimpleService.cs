@@ -11,7 +11,7 @@ namespace CodeGenerator.Simple
             CodeObject = new Simple();
         }
 
-        public override bool TryParse(string line, out Simple simple)
+        protected override bool TryParse(string line, out Simple simple)
         {
             string[] parts = line.Split(' ');
 

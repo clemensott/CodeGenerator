@@ -42,6 +42,6 @@ namespace CodeGenerator
             }
         }
 
-        public abstract bool TryParse(string line, out T obj);
+        protected abstract bool TryParse(string line, out T obj);
     }
 }

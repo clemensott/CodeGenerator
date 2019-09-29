@@ -10,7 +10,7 @@ namespace CodeGenerator.Singleton
             CodeObject = new Singleton();
         }
 
-        public override bool TryParse(string line, out Singleton singleton)
+        protected override bool TryParse(string line, out Singleton singleton)
         {
             string[] parts = line.Split(' ');
 
