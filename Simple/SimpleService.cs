@@ -25,7 +25,7 @@ namespace CodeGenerator.Simple
             return false;
         }
 
-        protected override IEnumerable<Func<Simple, string>> GetObjectsCodeGenerators()
+        protected override IEnumerable<Func<Simple, string>> GetObjectsCodeGenerators(bool getWhole)
         {
             yield return new Func<Simple, string>(GetCode);
         }

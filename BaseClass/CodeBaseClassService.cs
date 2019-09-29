@@ -144,14 +144,14 @@ namespace CodeGenerator.BaseClass
             BaseMainModifier = AccessModifier.Public;
         }
 
-        protected override IEnumerable<Func<Func<BaseClassElement, string>, string>> GetCodePartGenerators()
+        protected override IEnumerable<Func<Func<BaseClassElement, string>, string>> GetCodePartGenerators(bool getWhole)
         {
             if (implementINotifyPropertyChanged) yield return GetBaseVarCode;
             yield return GetBasePropertyCode;
             yield return LoopForeach;
         }
 
-        protected override IEnumerable<Func<BaseClassElement, string>> GetObjectsCodeGenerators()
+        protected override IEnumerable<Func<BaseClassElement, string>> GetObjectsCodeGenerators(bool getWhole)
         {
             if (implementINotifyPropertyChanged) yield return null;
             yield return null;

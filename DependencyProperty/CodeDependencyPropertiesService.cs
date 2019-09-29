@@ -94,7 +94,7 @@ namespace CodeGenerator.DependencyProperty
             return true;
         }
 
-        protected override IEnumerable<Func<DependencyProperty, string>> GetObjectsCodeGenerators()
+        protected override IEnumerable<Func<DependencyProperty, string>> GetObjectsCodeGenerators(bool getWhole)
         {
             yield return new Func<DependencyProperty, string>(GetCodePart1);
             yield return new Func<DependencyProperty, string>(GetCodePart2);

@@ -24,7 +24,7 @@ namespace CodeGenerator.Singleton
             return false;
         }
 
-        protected override IEnumerable<Func<Singleton, string>> GetObjectsCodeGenerators()
+        protected override IEnumerable<Func<Singleton, string>> GetObjectsCodeGenerators(bool getWhole)
         {
             yield return new Func<Singleton, string>(GetCodePart1);
             yield return new Func<Singleton, string>(GetCodePart2);

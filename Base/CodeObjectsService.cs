@@ -39,16 +39,16 @@ namespace CodeGenerator
         {
             CodePartsIndex = -1;
 
-            return string.Concat(GetCodeParts());
+            return string.Concat(GetCodeParts(true));
         }
 
         public string GetNextCodePart(out bool isLastPart)
         {
-            int count = Math.Max(GetCodePartGenerators().Count(), GetObjectsCodeGenerators().Count());
+            int count = Math.Max(GetCodePartGenerators(false).Count(), GetObjectsCodeGenerators(false).Count());
 
             if (CodePartsIndex == -1)
             {
-                codePartsEnumerator = GetCodeParts().GetEnumerator();
+                codePartsEnumerator = GetCodeParts(false).GetEnumerator();
                 codePartsEnumerator.MoveNext();
 
                 CodePartsIndex = 0;
@@ -71,10 +71,10 @@ namespace CodeGenerator
             CodePartsIndex = -1;
         }
 
-        private IEnumerable<string> GetCodeParts()
+        private IEnumerable<string> GetCodeParts(bool getWhole)
         {
-            Func<T, string>[] codeGenerators = GetObjectsCodeGenerators().ToArray();
-            Func<Func<T, string>, string>[] partGenerators = GetCodePartGenerators().ToArray();
+            Func<T, string>[] codeGenerators = GetObjectsCodeGenerators(true).ToArray();
+            Func<Func<T, string>, string>[] partGenerators = GetCodePartGenerators(getWhole).ToArray();
 
             for (int i = 0; i < codeGenerators.Length || i < partGenerators.Length; i++)
             {
@@ -85,11 +85,11 @@ namespace CodeGenerator
             }
         }
 
-        protected abstract IEnumerable<Func<T, string>> GetObjectsCodeGenerators();
+        protected abstract IEnumerable<Func<T, string>> GetObjectsCodeGenerators(bool getWhole);
 
-        protected virtual IEnumerable<Func<Func<T, string>, string>> GetCodePartGenerators()
+        protected virtual IEnumerable<Func<Func<T, string>, string>> GetCodePartGenerators(bool getWhole)
         {
-            foreach (Func<T, string> func in GetObjectsCodeGenerators()) yield return LoopForeach;
+            foreach (Func<T, string> func in GetObjectsCodeGenerators(getWhole)) yield return LoopForeach;
         }
 
         protected string LoopForeach(Func<T, string> func)

@@ -20,18 +20,29 @@ namespace CodeGenerator.Property
         {
         }
 
-        protected override IEnumerable<Func<Property, string>> GetObjectsCodeGenerators()
+        protected override IEnumerable<Func<Property, string>> GetObjectsCodeGenerators(bool getWhole)
         {
-            yield return new Func<Property, string>(GetPropertyCodePart1);
+            yield return p => throw new NotImplementedException();
             yield return new Func<Property, string>(GetPropertyCodePart2);
         }
 
-        protected override IEnumerable<Func<Func<Property, string>, string>> GetCodePartGenerators()
+        protected override IEnumerable<Func<Func<Property, string>, string>> GetCodePartGenerators(bool getWhole)
         {
-            yield return new Func<Func<Property, string>, string>(GetCodePart1);
+
+            yield return getWhole ? (Func<Func<Property, string>, string>)GetCodePart1Whole : GetCodePart1Parts;
         }
 
-        private string GetCodePart1(Func<Property, string> func)
+        private string GetCodePart1Whole(Func<Property, string> func)
+        {
+            return GetCodePart1(func, true);
+        }
+
+        private string GetCodePart1Parts(Func<Property, string> func)
+        {
+            return GetCodePart1(func, false);
+        }
+
+        private string GetCodePart1(Func<Property, string> func, bool getWhole)
         {
             string code = "";
 
@@ -53,12 +64,9 @@ namespace CodeGenerator.Property
                 }
             }
 
-            return code;
-        }
+            if (getWhole) code += "\r\n";
 
-        private static string GetPropertyCodePart1(Property property)
-        {
-            throw new NotImplementedException();
+            return code;
         }
 
         private static string GetPropertyCodePart2(Property property)

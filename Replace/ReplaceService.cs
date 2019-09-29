@@ -39,12 +39,12 @@ namespace CodeGenerator.Replace
             return true;
         }
 
-        protected override IEnumerable<Func<Replace, string>> GetObjectsCodeGenerators()
+        protected override IEnumerable<Func<Replace, string>> GetObjectsCodeGenerators(bool getWhole)
         {
             yield break;
         }
 
-        protected override IEnumerable<Func<Func<Replace, string>, string>> GetCodePartGenerators()
+        protected override IEnumerable<Func<Func<Replace, string>, string>> GetCodePartGenerators(bool getWhole)
         {
             int count = CodeObjects.Min(o => o.ReplaceTexts.Length);
 
