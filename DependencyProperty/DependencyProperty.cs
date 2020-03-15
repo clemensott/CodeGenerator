@@ -4,7 +4,7 @@ namespace CodeGenerator.DependencyProperty
 {
     public class DependencyProperty : INotifyPropertyChanged
     {
-        private bool withBody, ignoreChanges;
+        private bool withBody, withPropertyChanged, isReadonly, withValidation, withNewValue, withOldValue;
         private string name, propertyType, defaultValue;
 
         public bool WithBody
@@ -19,15 +19,61 @@ namespace CodeGenerator.DependencyProperty
             }
         }
 
-        public bool IgnoreChanges
+        public bool WithPropertyChanged
         {
-            get { return ignoreChanges; }
+            get { return withPropertyChanged; }
             set
             {
-                if (value == ignoreChanges) return;
+                if (value == withPropertyChanged) return;
 
-                ignoreChanges = value;
-                OnPropertyChanged(nameof(IgnoreChanges));
+                withPropertyChanged = value;
+                OnPropertyChanged(nameof(WithPropertyChanged));
+            }
+        }
+        public bool IsReadonly
+        {
+            get => isReadonly;
+            set
+            {
+                if (value == isReadonly) return;
+
+                isReadonly = value;
+                OnPropertyChanged(nameof(IsReadonly));
+            }
+        }
+
+        public bool WithValidation
+        {
+            get => withValidation;
+            set
+            {
+                if (value == withValidation) return;
+
+                withValidation = value;
+                OnPropertyChanged(nameof(WithValidation));
+            }
+        }
+        public bool WithNewValue
+        {
+            get => withNewValue;
+            set
+            {
+                if (value == withNewValue) return;
+
+                withNewValue = value;
+                OnPropertyChanged(nameof(WithNewValue));
+            }
+        }
+
+        public bool WithOldValue
+        {
+            get => withOldValue;
+            set
+            {
+                if (value == withOldValue) return;
+
+                withOldValue = value;
+                OnPropertyChanged(nameof(WithOldValue));
             }
         }
 

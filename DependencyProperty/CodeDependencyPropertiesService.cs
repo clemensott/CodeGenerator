@@ -35,7 +35,6 @@ namespace CodeGenerator.DependencyProperty
 
         protected override bool TryParse(string dataText, out DependencyProperty dependencyProperty)
         {
-            //dataText = dataText.Replace("  ", " ");
             dependencyProperty = null;
 
             try
@@ -46,17 +45,25 @@ namespace CodeGenerator.DependencyProperty
 
                 string propertyType = data[0];
                 string name = data[1];
-                bool withBody = false;
-                bool ignoreChanges = false;
-                string defaultValue = string.Join(" ", data.Skip(4));
+                bool isReadonly = false, withBody = false, withPropertyChanged = true,
+                    withNewValue = true, withOldValue = true, withValidation = false;
+                string defaultValue = string.Join(" ", data.Skip(8));
 
-                if (data.Length > 2 && !TryConvertToBoolean(data[2], ref withBody)) return false;
-                if (data.Length > 3 && !TryConvertToBoolean(data[3], ref ignoreChanges)) return false;
+                if (data.Length > 2 && !TryConvertToBoolean(data[2], ref isReadonly)) return false;
+                if (data.Length > 3 && !TryConvertToBoolean(data[3], ref withBody)) return false;
+                if (data.Length > 4 && !TryConvertToBoolean(data[4], ref withPropertyChanged)) return false;
+                if (data.Length > 5 && !TryConvertToBoolean(data[5], ref withNewValue)) return false;
+                if (data.Length > 6 && !TryConvertToBoolean(data[6], ref withOldValue)) return false;
+                if (data.Length > 7 && !TryConvertToBoolean(data[7], ref withValidation)) return false;
 
                 dependencyProperty = new DependencyProperty()
                 {
                     WithBody = withBody,
-                    IgnoreChanges = ignoreChanges,
+                    WithPropertyChanged = withPropertyChanged,
+                    IsReadonly = isReadonly,
+                    WithValidation = withValidation,
+                    WithNewValue = withNewValue,
+                    WithOldValue = withOldValue,
                     PropertyType = propertyType,
                     Name = name,
                     DefaultValue = defaultValue
@@ -102,94 +109,120 @@ namespace CodeGenerator.DependencyProperty
 
         private string GetCodePart1(DependencyProperty dp)
         {
-            string pcc = dp.WithBody ? "new PropertyChangedCallback(On{2}PropertyChanged)" : "On{2}PropertyChanged";
+            return string.Join("\r\n", GetCodePart1Lines(dp));
+        }
+
+        private IEnumerable<string> GetCodePart1Lines(DependencyProperty dp)
+        {
+            bool isReadonly = dp.IsReadonly && ForWpf;
+            string registerMethod = isReadonly ? "RegisterReadOnly" : "Register";
             string defaultValue = dp.DefaultValue;
             bool hasDefaultValue = !string.IsNullOrWhiteSpace(defaultValue);
-            string f = "\r\n";
+            string valueValidation = dp.WithBody ?
+                $"new ValidateValueCallback(On{dp.Name}PropertyValidation)" : $"On{dp.Name}PropertyValidation";
+            string propertyMetadata = GetPropertyMetadataDefinition(dp);
+            bool withValidation = dp.WithValidation && ForWpf;
 
-            if (ForWpf)
+            yield return $"";
+
+            if (isReadonly) yield return $"\t\tprivate static readonly DependencyPropertyKey {dp.Name}PropertyKey =";
+            else yield return $"\t\tpublic static readonly DependencyProperty {dp.Name}Property =";
+
+            if (withValidation)
             {
-                if (dp.IgnoreChanges && hasDefaultValue)
-                {
-                    f += "\t\tpublic static readonly DependencyProperty {2}Property =\r\n";
-                    f += "\t\t\tDependencyProperty.Register(\"{2}\", typeof({3}), typeof({4}),\r\n";
-                    f += "\t\t\t\tnew PropertyMetadata({5}));\r\n";
-                }
-                else if (!dp.IgnoreChanges && hasDefaultValue)
-                {
-                    f += "\t\tpublic static readonly DependencyProperty {2}Property =\r\n";
-                    f += "\t\t\tDependencyProperty.Register(\"{2}\", typeof({3}), typeof({4}),\r\n";
-                    f += "\t\t\t\tnew PropertyMetadata({5}, {6}));\r\n";
-                }
-                else if(dp.IgnoreChanges && !hasDefaultValue)
-                {
-                    f += "\t\tpublic static readonly DependencyProperty {2}Property =\r\n";
-                    f += "\t\t\tDependencyProperty.Register(\"{2}\", typeof({3}), typeof({4}));\r\n";
-                }
-                else
-                {
-                    f += "\t\tpublic static readonly DependencyProperty {2}Property =\r\n";
-                    f += "\t\t\tDependencyProperty.Register(\"{2}\", typeof({3}), typeof({4}),\r\n";
-                    f += "\t\t\t\tnew PropertyMetadata({6}));\r\n";
-                }
+                if (propertyMetadata == null) propertyMetadata = $"new PropertyMetadata()";
 
+                yield return $"\t\t\tDependencyProperty.{registerMethod}(nameof({dp.Name}), typeof({dp.PropertyType}), typeof({ControlType}),";
+                yield return $"\t\t\t\t{propertyMetadata},";
+                yield return $"\t\t\t\t{valueValidation});";
+            }
+            else if (propertyMetadata != null)
+            {
+                yield return $"\t\t\tDependencyProperty.{registerMethod}(nameof({dp.Name}), typeof({dp.PropertyType}), typeof({ControlType}),";
+                yield return $"\t\t\t\t{propertyMetadata});";
             }
             else
             {
-                if (dp.IgnoreChanges)
-                {
-                    f += "\t\tpublic static readonly DependencyProperty {2}Property =\r\n";
-                    f += "\t\t\tDependencyProperty.Register(\"{2}\", typeof({3}), typeof({4}),\r\n";
-                    f += "\t\t\t\tnew PropertyMetadata({5}));\r\n";
-                }
-                else
-                {
-                    f += "\t\tpublic static readonly DependencyProperty {2}Property =\r\n";
-                    f += "\t\t\tDependencyProperty.Register(\"{2}\", typeof({3}), typeof({4}),\r\n";
-                    f += "\t\t\t\tnew PropertyMetadata({5}, {6}));\r\n";
-                }
-
-                if (hasDefaultValue) defaultValue = "default(" + dp.PropertyType + ")";
+                yield return $"\t\t\tDependencyProperty.{registerMethod}(nameof({dp.Name}), typeof({dp.PropertyType}), typeof({ControlType}));";
             }
 
-            f += "\r\n";
+            yield return $"";
 
-            if (!dp.IgnoreChanges)
+            if (isReadonly)
             {
-                f += "\t\tprivate static void On{2}PropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)\r\n";
-                f += "\t\t{0}\r\n";
-                f += "\t\t\t{4} s = ({4})sender;\r\n";
-                f += "\t\t\t{3} value = ({3})e.NewValue;\r\n";
-                f += "\t\t{1}\r\n";
-                f += "\r\n";
+                yield return $"\t\tpublic static readonly DependencyProperty {dp.Name}Property = {dp.Name}PropertyKey.DependencyProperty;";
+                yield return $"";
             }
 
-            pcc = string.Format(pcc, "{", "}", dp.Name);
-            return string.Format(f, "{", "}", dp.Name, dp.PropertyType, ControlType, defaultValue, pcc);
+            if (dp.WithPropertyChanged)
+            {
+                yield return $"\t\tprivate static void On{dp.Name}PropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)";
+                yield return $"\t\t{{";
+                yield return $"\t\t\t{ControlType} s = ({ControlType})sender;";
+                if (dp.WithOldValue) yield return $"\t\t\t{dp.PropertyType} oldValue = ({dp.PropertyType})e.OldValue;";
+                if (dp.WithNewValue) yield return $"\t\t\t{dp.PropertyType} newValue = ({dp.PropertyType})e.NewValue;";
+                yield return $"";
+                yield return $"\t\t\tthrow new NotImplementedException();";
+                yield return $"\t\t}}";
+                yield return $"";
+            }
+
+            if (withValidation)
+            {
+                yield return $"\t\tprivate static bool On{dp.Name}PropertyValidation(object obj)";
+                yield return $"\t\t{{";
+                yield return $"\t\t\t{dp.PropertyType} value = ({dp.PropertyType})obj;";
+                yield return $"";
+                yield return $"\t\t\tthrow new NotImplementedException();";
+                yield return $"\t\t}}";
+                yield return $"";
+            }
+        }
+
+        private string GetPropertyMetadataDefinition(DependencyProperty dp)
+        {
+            bool hasDefaultValue = !string.IsNullOrWhiteSpace(dp.DefaultValue);
+            string defaultValue = hasDefaultValue ? dp.DefaultValue : $"default({dp.PropertyType})";
+            string propertyChangedCallback = dp.WithBody ?
+                $"new PropertyChangedCallback(On{dp.Name}PropertyChanged)" : $"On{dp.Name}PropertyChanged";
+
+            if (hasDefaultValue || !ForWpf || dp.IsReadonly)
+            {
+                if (!dp.WithPropertyChanged) return $"new PropertyMetadata({defaultValue})";
+                else return $"new PropertyMetadata({defaultValue}, {propertyChangedCallback})";
+            }
+
+            if (!dp.WithPropertyChanged && !hasDefaultValue) return null;
+            else return $"new PropertyMetadata({propertyChangedCallback})";
         }
 
         private string GetCodePart2(DependencyProperty dp)
         {
-            string f = string.Empty;
+            return string.Join("\r\n", GetCodePart2Lines(dp));
+        }
 
-            f += "\t\tpublic {3} {2}\r\n";
-            f += "\t\t{0}\r\n";
+        private IEnumerable<string> GetCodePart2Lines(DependencyProperty dp)
+        {
+            string setModifier = dp.IsReadonly ? "private " : "";
+            string dependencyPropertyName = dp.IsReadonly && ForWpf ? $"{dp.Name}PropertyKey" : $"{dp.Name}Property";
+
+            yield return $"";
+            yield return $"\t\tpublic {dp.PropertyType} {dp.Name}";
+            yield return $"\t\t{{";
 
             if (dp.WithBody)
             {
-                f += "\t\t\tget {0} return ({3})GetValue({2}Property); {1}\r\n";
-                f += "\t\t\tset {0} SetValue({2}Property, value); {1}\r\n";
+                yield return $"\t\t\tget {{ return ({dp.PropertyType})GetValue({dp.Name}Property); }}";
+                yield return $"\t\t\t{setModifier}set {{ SetValue({dp.Name}Property, value); }}";
             }
             else
             {
-                f += "\t\t\tget => ({3})GetValue({2}Property);\r\n";
-                f += "\t\t\tset => SetValue({2}Property, value);\r\n";
+                yield return $"\t\t\tget => ({dp.PropertyType})GetValue({dp.Name}Property);";
+                yield return $"\t\t\t{setModifier}set => SetValue({dependencyPropertyName}, value);";
             }
 
-            f += "\t\t{1}\r\n";
-            f += "\r\n";
-
-            return string.Format(f, "{", "}", dp.Name, dp.PropertyType, ControlType, dp.DefaultValue);
+            yield return $"\t\t}}";
+            yield return $"";
         }
     }
 }
