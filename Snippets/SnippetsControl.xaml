@@ -4,14 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:CodeGenerator.Snippets"
-             xmlns:spi="clr-namespace:StdOttFramework.Converters.Specialized;assembly=StdOttFrameworkLib"
+             xmlns:con="clr-namespace:StdOttFramework.Converters;assembly=StdOttFrameworkLib"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
 
     <UserControl.Resources>
         <sys:Int32 x:Key="one">1</sys:Int32>
-        <spi:CollapsedVisibleConverter x:Key="colCon" CompareValue="{StaticResource one}"/>
+        <con:CollapsedVisibleConverter x:Key="colCon" CompareValue="{StaticResource one}"/>
     </UserControl.Resources>
 
     <ScrollViewer>
