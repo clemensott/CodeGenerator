@@ -1,6 +1,8 @@
-﻿namespace CodeGenerator.BaseClass
+﻿using System;
+
+namespace CodeGenerator.BaseClass
 {
-    static class CodeExtension
+    internal static class CodeExtension
     {
         public static int SetNextIndexOf(this Code code, char c)
         {
@@ -9,7 +11,7 @@
 
         public static int SetNextIndexOf(this Code code, string text)
         {
-            return code.Position = code.String.IndexOf(text);
+            return code.Position = code.String.IndexOf(text, StringComparison.Ordinal);
         }
 
         public static int NextIndexOfInCode(this Code code, char c)

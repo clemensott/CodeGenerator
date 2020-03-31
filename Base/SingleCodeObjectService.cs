@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Windows.Input;
 
-namespace CodeGenerator
+namespace CodeGenerator.Base
 {
     public abstract class SingleCodeObjectService<T> : CodeObjectsService<T> where T : INotifyPropertyChanged
     {
@@ -10,7 +10,7 @@ namespace CodeGenerator
 
         public T CodeObject
         {
-            get { return CodeObjects.FirstOrDefault(); }
+            get => CodeObjects.FirstOrDefault();
             set
             {
                 if (ReferenceEquals(value, CodeObject)) return;
@@ -24,7 +24,7 @@ namespace CodeGenerator
 
         public string ParseText
         {
-            get { return parseText; }
+            get => parseText;
             set
             {
                 if (value == parseText) return;

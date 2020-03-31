@@ -3,16 +3,17 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
+using StdOttStandard;
 
 namespace CodeGenerator.BaseClass
 {
-    class ParameterConverter : IValueConverter
+    internal class ParameterConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             IEnumerable<Parameter> parameters = (IEnumerable<Parameter>)value;
 
-            return string.Join(", ", parameters);
+            return string.Join(", ", parameters.ToNotNull());
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

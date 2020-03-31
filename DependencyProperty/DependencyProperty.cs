@@ -9,7 +9,7 @@ namespace CodeGenerator.DependencyProperty
 
         public bool WithBody
         {
-            get { return withBody; }
+            get => withBody;
             set
             {
                 if (value == withBody) return;
@@ -21,7 +21,7 @@ namespace CodeGenerator.DependencyProperty
 
         public bool WithPropertyChanged
         {
-            get { return withPropertyChanged; }
+            get => withPropertyChanged;
             set
             {
                 if (value == withPropertyChanged) return;
@@ -79,7 +79,7 @@ namespace CodeGenerator.DependencyProperty
 
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 if (value == name) return;
@@ -91,7 +91,7 @@ namespace CodeGenerator.DependencyProperty
 
         public string PropertyType
         {
-            get { return propertyType; }
+            get => propertyType;
             set
             {
                 if (value == propertyType) return;
@@ -103,7 +103,7 @@ namespace CodeGenerator.DependencyProperty
 
         public string DefaultValue
         {
-            get { return defaultValue; }
+            get => defaultValue;
             set
             {
                 if (value == defaultValue) return;

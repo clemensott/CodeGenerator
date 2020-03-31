@@ -12,7 +12,7 @@ namespace CodeGenerator.Property
 
         public bool PropChange
         {
-            get { return propChange; }
+            get => propChange;
             set
             {
                 if (value == propChange) return;
@@ -24,7 +24,7 @@ namespace CodeGenerator.Property
 
         public bool WithBody
         {
-            get { return withBody; }
+            get => withBody;
             set
             {
                 if (value == withBody) return;
@@ -36,7 +36,7 @@ namespace CodeGenerator.Property
 
         public string Datatype
         {
-            get { return datatype; }
+            get => datatype;
             set
             {
                 if (value == datatype) return;
@@ -48,7 +48,7 @@ namespace CodeGenerator.Property
 
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 if (value == name) return;
@@ -60,7 +60,7 @@ namespace CodeGenerator.Property
 
         public AccessModifier GeterModifier
         {
-            get { return geterModifier; }
+            get => geterModifier;
             set
             {
                 if (value == geterModifier) return;
@@ -72,7 +72,7 @@ namespace CodeGenerator.Property
 
         public AccessModifier SeterModifier
         {
-            get { return seterModifier; }
+            get => seterModifier;
             set
             {
                 if (value == seterModifier) return;

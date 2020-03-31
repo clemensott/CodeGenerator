@@ -1,20 +1,22 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGenerator.Base;
 
 namespace CodeGenerator.Property
 {
     public class CodePropertiesService : MultipleCodeObjectsService<Property>
     {
         public const string NotifyPropertyChangeText = ": INotifyPropertyChanged\r\n{\r\n\r\n" +
-            "\t\tpublic event PropertyChangedEventHandler PropertyChanged;\r\n" +
-            "\r\n" +
-            "\t\tprivate void OnPropertyChanged(string name)\r\n" +
-            "\t\t{\r\n" +
-            "\t\t\tPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));\r\n" +
-            "\t\t}";
+                                                       "\t\tpublic event PropertyChangedEventHandler PropertyChanged;\r\n" +
+                                                       "\r\n" +
+                                                       "\t\tprivate void OnPropertyChanged(string name)\r\n" +
+                                                       "\t\t{\r\n" +
+                                                       "\t\t\tPropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));\r\n" +
+                                                       "\t\t}";
 
-        public IEnumerable<AccessModifier> AccessModifiers => Enum.GetValues(typeof(AccessModifier)).Cast<AccessModifier>();
+        public IEnumerable<AccessModifier> AccessModifiers =>
+            Enum.GetValues(typeof(AccessModifier)).Cast<AccessModifier>();
 
         public CodePropertiesService()
         {
@@ -22,27 +24,16 @@ namespace CodeGenerator.Property
 
         protected override IEnumerable<Func<Property, string>> GetObjectsCodeGenerators(bool getWhole)
         {
-            yield return p => throw new NotImplementedException();
-            yield return new Func<Property, string>(GetPropertyCodePart2);
+            yield return p => throw new NotSupportedException();
+            yield return GetPropertyCodePart2;
         }
 
         protected override IEnumerable<Func<Func<Property, string>, string>> GetCodePartGenerators(bool getWhole)
         {
-
-            yield return getWhole ? (Func<Func<Property, string>, string>)GetCodePart1Whole : GetCodePart1Parts;
+            yield return (func) => GetCodePart1(getWhole);
         }
 
-        private string GetCodePart1Whole(Func<Property, string> func)
-        {
-            return GetCodePart1(func, true);
-        }
-
-        private string GetCodePart1Parts(Func<Property, string> func)
-        {
-            return GetCodePart1(func, false);
-        }
-
-        private string GetCodePart1(Func<Property, string> func, bool getWhole)
+        private string GetCodePart1(bool getWhole)
         {
             string code = "";
 
@@ -73,8 +64,9 @@ namespace CodeGenerator.Property
         {
             string nameLowerStart = char.ToLower(property.Name.First()) + property.Name.Remove(0, 1);
             string nameUpperStart = char.ToUpper(property.Name.First()) + property.Name.Remove(0, 1);
-            string propChange = !property.PropChange ? string.Empty :
-                string.Format("\t\t\t\tOnPropertyChanged(nameof({0}));\r\n", nameUpperStart);
+            string propChange = !property.PropChange
+                ? string.Empty
+                : string.Format("\t\t\t\tOnPropertyChanged(nameof({0}));\r\n", nameUpperStart);
             string geterModifier = GetAccessModifierCode(property.GeterModifier);
             string seterModifier = GetAccessModifierCode(property.SeterModifier);
 
@@ -97,26 +89,15 @@ namespace CodeGenerator.Property
 
         private static string GetAccessModifierCode(AccessModifier modifier)
         {
-            switch (modifier)
+            return modifier switch
             {
-                case AccessModifier.Default:
-                    return string.Empty;
-
-                case AccessModifier.Public:
-                    return "public ";
-
-                case AccessModifier.Internal:
-                    return "internal ";
-
-                case AccessModifier.Protected:
-                    return "protected ";
-
-                case AccessModifier.Private:
-                    return "private ";
-
-                default:
-                    throw new NotImplementedException();
-            }
+                AccessModifier.Default => string.Empty,
+                AccessModifier.Public => "public ",
+                AccessModifier.Internal => "internal ",
+                AccessModifier.Protected => "protected ",
+                AccessModifier.Private => "private ",
+                _ => throw new ArgumentException(nameof(modifier))
+            };
         }
 
         protected override bool TryParse(string line, out Property property)
@@ -149,9 +130,10 @@ namespace CodeGenerator.Property
                 };
                 return true;
             }
-            catch { }
-
-            return false;
+            catch
+            {
+                return false;   
+            }
         }
 
         private static bool TryConvertToBoolean(string s, ref bool value)

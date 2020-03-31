@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGenerator.Base;
 
 namespace CodeGenerator.BaseClass
 {
@@ -37,7 +38,7 @@ namespace CodeGenerator.BaseClass
 
         public bool ImplementINotifyPropertyChanged
         {
-            get { return implementINotifyPropertyChanged; }
+            get => implementINotifyPropertyChanged;
             set
             {
                 if (value == implementINotifyPropertyChanged) return;
@@ -49,7 +50,7 @@ namespace CodeGenerator.BaseClass
 
         public bool ImplementINotifyPropertyChangedOnBase
         {
-            get { return implementINotifyPropertyChangedOnBase; }
+            get => implementINotifyPropertyChangedOnBase;
             set
             {
                 if (value == implementINotifyPropertyChangedOnBase) return;
@@ -61,7 +62,7 @@ namespace CodeGenerator.BaseClass
 
         public AccessModifier BaseMainModifier
         {
-            get { return baseMainModifier; }
+            get => baseMainModifier;
             set
             {
                 if (value == baseMainModifier) return;
@@ -73,7 +74,7 @@ namespace CodeGenerator.BaseClass
 
         public AccessModifier BaseGeterModifier
         {
-            get { return baseGeterModifier; }
+            get => baseGeterModifier;
             set
             {
                 if (value == baseGeterModifier) return;
@@ -85,7 +86,7 @@ namespace CodeGenerator.BaseClass
 
         public AccessModifier BaseSeterModifier
         {
-            get { return baseSeterModifier; }
+            get => baseSeterModifier;
             set
             {
                 if (value == baseSeterModifier) return;
@@ -97,7 +98,7 @@ namespace CodeGenerator.BaseClass
 
         public string BaseClassName
         {
-            get { return baseClassName; }
+            get => baseClassName;
             set
             {
                 if (value == baseClassName) return;
@@ -109,7 +110,7 @@ namespace CodeGenerator.BaseClass
 
         public override string ParseText
         {
-            get { return parseText; }
+            get => parseText;
             set
             {
                 Code code = new Code(value);
@@ -211,23 +212,23 @@ namespace CodeGenerator.BaseClass
 
                     if (geterModifier != null)
                     {
-                        geter = string.Format("{0}get => {1}.{2}[{3}]; ", geterModifier, baseName, name, indexerCall);
+                        geter = $"{geterModifier}get => {baseName}.{name}[{indexerCall}]; ";
                     }
 
                     if (seterModifier != null)
                     {
-                        seter = string.Format("{0}set => {1}.{2}[{3}] = value; ", seterModifier, baseName, name, indexerCall);
+                        seter = $"{seterModifier}set => {baseName}.{name}[{indexerCall}] = value; ";
                     }
                     break;
 
                 case ElementType.Property:
                     format = propertyFormat;
 
-                    if (geterModifier != null) geter = string.Format("{0}get => {1}.{2}; ", geterModifier, baseName, name);
+                    if (geterModifier != null) geter = $"{geterModifier}get => {baseName}.{name}; ";
                     if (seterModifier != null)
                     {
                         seter = ImplementINotifyPropertyChanged ^ !ImplementINotifyPropertyChangedOnBase ?
-                            string.Format("{0}set => {1}.{2} = value; ", seterModifier, baseName, name) :
+                            $"{seterModifier}set => {baseName}.{name} = value; " :
                             string.Format(propertySeterWithINotifyPropertyChangedFormat, '{', '}', baseName, name, seterModifier);
                     }
                     break;
@@ -236,7 +237,7 @@ namespace CodeGenerator.BaseClass
                     format = methodFormat;
 
                     string methodCall = string.Join(", ", e.Parameters.Select(p => p.Name));
-                    geter = string.Format("{0}.{1}({2});", baseName, name, methodCall);
+                    geter = $"{baseName}.{name}({methodCall});";
                     break;
 
                 default:
@@ -249,31 +250,20 @@ namespace CodeGenerator.BaseClass
 
         private string GetAccessModifierCode(AccessModifier modifier)
         {
-            switch (modifier)
+            return modifier switch
             {
-                case AccessModifier.Default:
-                    return string.Empty;
-
-                case AccessModifier.Public:
-                    return "public ";
-
-                case AccessModifier.Internal:
-                    return "internal ";
-
-                case AccessModifier.Protected:
-                    return "protected ";
-
-                case AccessModifier.Private:
-                    return "private ";
-
-                default:
-                    throw new NotImplementedException();
-            }
+                AccessModifier.Default => string.Empty,
+                AccessModifier.Public => "public ",
+                AccessModifier.Internal => "internal ",
+                AccessModifier.Protected => "protected ",
+                AccessModifier.Private => "private ",
+                _ => throw new ArgumentException(nameof(modifier))
+            };
         }
 
         protected override bool TryParse(string line, out BaseClassElement obj)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
 
         private bool TryParse(Code code, out List<BaseClassElement> objs)
@@ -332,7 +322,7 @@ namespace CodeGenerator.BaseClass
 
             text = text.Substring(doublePointsIndex + 1);
 
-            int whereIndex = text.IndexOf(" where ");
+            int whereIndex = text.IndexOf(" where ", StringComparison.Ordinal);
             string basesText = whereIndex == -1 ? text : text.Remove(whereIndex);
             string[] bases = basesText.Split(',').Select(t => t.Trim()).ToArray();
 
@@ -498,8 +488,6 @@ namespace CodeGenerator.BaseClass
                 code.Position = semi.Position;
                 return true;
             }
-
-            throw new NotImplementedException();
         }
 
         private static (AccessModifier modifier, int startIndex) GetAccessModifier(string header)
@@ -516,7 +504,7 @@ namespace CodeGenerator.BaseClass
 
         private static bool TryIndexOfKeyword(string s, string keyword, out int index)
         {
-            index = s.IndexOf(keyword);
+            index = s.IndexOf(keyword, StringComparison.Ordinal);
 
             return index >= 0;
         }

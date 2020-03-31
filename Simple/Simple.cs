@@ -9,7 +9,7 @@ namespace CodeGenerator.Simple
 
         public string CompleteCommend
         {
-            get { return completeCommend; }
+            get => completeCommend;
             set
             {
                 if (value == completeCommend) return;

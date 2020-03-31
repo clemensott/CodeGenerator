@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using CodeGenerator.Base;
 
 namespace CodeGenerator.Singleton
 {
@@ -26,8 +27,8 @@ namespace CodeGenerator.Singleton
 
         protected override IEnumerable<Func<Singleton, string>> GetObjectsCodeGenerators(bool getWhole)
         {
-            yield return new Func<Singleton, string>(GetCodePart1);
-            yield return new Func<Singleton, string>(GetCodePart2);
+            yield return GetCodePart1;
+            yield return GetCodePart2;
         }
 
         private static string GetCodePart1(Singleton singleton)

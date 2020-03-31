@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace CodeGenerator.Replace
 {
-    class ReplaceText
+    internal class ReplaceText
     {
-        private List<(bool replaced, string text)> parts;
+        private readonly List<(bool replaced, string text)> parts;
 
         public ReplaceText(string text)
         {

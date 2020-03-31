@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGenerator.Base;
 
 namespace CodeGenerator.DependencyProperty
 {
@@ -11,7 +12,7 @@ namespace CodeGenerator.DependencyProperty
 
         public bool ForWpf
         {
-            get { return isWpf; }
+            get => isWpf;
             set
             {
                 if (value == isWpf) return;
@@ -23,7 +24,7 @@ namespace CodeGenerator.DependencyProperty
 
         public string ControlType
         {
-            get { return controlType; }
+            get => controlType;
             set
             {
                 if (value == controlType) return;
@@ -103,8 +104,8 @@ namespace CodeGenerator.DependencyProperty
 
         protected override IEnumerable<Func<DependencyProperty, string>> GetObjectsCodeGenerators(bool getWhole)
         {
-            yield return new Func<DependencyProperty, string>(GetCodePart1);
-            yield return new Func<DependencyProperty, string>(GetCodePart2);
+            yield return GetCodePart1;
+            yield return GetCodePart2;
         }
 
         private string GetCodePart1(DependencyProperty dp)
@@ -116,21 +117,19 @@ namespace CodeGenerator.DependencyProperty
         {
             bool isReadonly = dp.IsReadonly && ForWpf;
             string registerMethod = isReadonly ? "RegisterReadOnly" : "Register";
-            string defaultValue = dp.DefaultValue;
-            bool hasDefaultValue = !string.IsNullOrWhiteSpace(defaultValue);
             string valueValidation = dp.WithBody ?
                 $"new ValidateValueCallback(On{dp.Name}PropertyValidation)" : $"On{dp.Name}PropertyValidation";
             string propertyMetadata = GetPropertyMetadataDefinition(dp);
             bool withValidation = dp.WithValidation && ForWpf;
 
-            yield return $"";
+            yield return "";
 
             if (isReadonly) yield return $"\t\tprivate static readonly DependencyPropertyKey {dp.Name}PropertyKey =";
             else yield return $"\t\tpublic static readonly DependencyProperty {dp.Name}Property =";
 
             if (withValidation)
             {
-                if (propertyMetadata == null) propertyMetadata = $"new PropertyMetadata()";
+                if (propertyMetadata == null) propertyMetadata = "new PropertyMetadata()";
 
                 yield return $"\t\t\tDependencyProperty.{registerMethod}(nameof({dp.Name}), typeof({dp.PropertyType}), typeof({ControlType}),";
                 yield return $"\t\t\t\t{propertyMetadata},";
@@ -146,36 +145,36 @@ namespace CodeGenerator.DependencyProperty
                 yield return $"\t\t\tDependencyProperty.{registerMethod}(nameof({dp.Name}), typeof({dp.PropertyType}), typeof({ControlType}));";
             }
 
-            yield return $"";
+            yield return "";
 
             if (isReadonly)
             {
                 yield return $"\t\tpublic static readonly DependencyProperty {dp.Name}Property = {dp.Name}PropertyKey.DependencyProperty;";
-                yield return $"";
+                yield return "";
             }
 
             if (dp.WithPropertyChanged)
             {
                 yield return $"\t\tprivate static void On{dp.Name}PropertyChanged(DependencyObject sender, DependencyPropertyChangedEventArgs e)";
-                yield return $"\t\t{{";
+                yield return "\t\t{";
                 yield return $"\t\t\t{ControlType} s = ({ControlType})sender;";
                 if (dp.WithOldValue) yield return $"\t\t\t{dp.PropertyType} oldValue = ({dp.PropertyType})e.OldValue;";
                 if (dp.WithNewValue) yield return $"\t\t\t{dp.PropertyType} newValue = ({dp.PropertyType})e.NewValue;";
-                yield return $"";
-                yield return $"\t\t\tthrow new NotImplementedException();";
-                yield return $"\t\t}}";
-                yield return $"";
+                yield return "";
+                yield return "\t\t\tthrow new NotImplementedException();";
+                yield return "\t\t}";
+                yield return "";
             }
 
             if (withValidation)
             {
                 yield return $"\t\tprivate static bool On{dp.Name}PropertyValidation(object obj)";
-                yield return $"\t\t{{";
+                yield return "\t\t{";
                 yield return $"\t\t\t{dp.PropertyType} value = ({dp.PropertyType})obj;";
-                yield return $"";
-                yield return $"\t\t\tthrow new NotImplementedException();";
-                yield return $"\t\t}}";
-                yield return $"";
+                yield return "";
+                yield return "\t\t\tthrow new NotImplementedException();";
+                yield return "\t\t}";
+                yield return "";
             }
         }
 
@@ -188,12 +187,11 @@ namespace CodeGenerator.DependencyProperty
 
             if (hasDefaultValue || !ForWpf || dp.IsReadonly)
             {
-                if (!dp.WithPropertyChanged) return $"new PropertyMetadata({defaultValue})";
-                else return $"new PropertyMetadata({defaultValue}, {propertyChangedCallback})";
+                return !dp.WithPropertyChanged ? $"new PropertyMetadata({defaultValue})" : 
+                    $"new PropertyMetadata({defaultValue}, {propertyChangedCallback})";
             }
 
-            if (!dp.WithPropertyChanged && !hasDefaultValue) return null;
-            else return $"new PropertyMetadata({propertyChangedCallback})";
+            return !dp.WithPropertyChanged ? null : $"new PropertyMetadata({propertyChangedCallback})";
         }
 
         private string GetCodePart2(DependencyProperty dp)
@@ -206,9 +204,9 @@ namespace CodeGenerator.DependencyProperty
             string setModifier = dp.IsReadonly ? "private " : "";
             string dependencyPropertyName = dp.IsReadonly && ForWpf ? $"{dp.Name}PropertyKey" : $"{dp.Name}Property";
 
-            yield return $"";
+            yield return "";
             yield return $"\t\tpublic {dp.PropertyType} {dp.Name}";
-            yield return $"\t\t{{";
+            yield return "\t\t{";
 
             if (dp.WithBody)
             {
@@ -221,8 +219,8 @@ namespace CodeGenerator.DependencyProperty
                 yield return $"\t\t\t{setModifier}set => SetValue({dependencyPropertyName}, value);";
             }
 
-            yield return $"\t\t}}";
-            yield return $"";
+            yield return "\t\t}";
+            yield return "";
         }
     }
 }

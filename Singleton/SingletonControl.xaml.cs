@@ -8,7 +8,7 @@ namespace CodeGenerator.Singleton
     /// </summary>
     public partial class SingletonControl : UserControl
     {
-        public SingletonService ViewModel { get { return (SingletonService) DataContext; } }
+        public SingletonService ViewModel => (SingletonService) DataContext;
 
         public SingletonControl()
         {

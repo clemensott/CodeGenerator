@@ -23,7 +23,7 @@ namespace CodeGenerator
 
         public SimpleService Simple
         {
-            get { return simple; }
+            get => simple;
             set
             {
                 if (value == simple) return;
@@ -35,7 +35,7 @@ namespace CodeGenerator
 
         public ReplaceService Replace
         {
-            get { return replace; }
+            get => replace;
             set
             {
                 if (value == replace) return;
@@ -47,7 +47,7 @@ namespace CodeGenerator
 
         public CodePropertiesService Property
         {
-            get { return property; }
+            get => property;
             set
             {
                 if (value == property) return;
@@ -59,7 +59,7 @@ namespace CodeGenerator
 
         public SingletonService Singleton
         {
-            get { return singleton; }
+            get => singleton;
             set
             {
                 if (value == singleton) return;
@@ -71,7 +71,7 @@ namespace CodeGenerator
 
         public CodeDependencyPropertiesService DependencyProperty
         {
-            get { return dependencyProperty; }
+            get => dependencyProperty;
             set
             {
                 if (value == dependencyProperty) return;
@@ -83,7 +83,7 @@ namespace CodeGenerator
 
         public CodeBaseClassService BaseClass
         {
-            get { return baseClass; }
+            get => baseClass;
             set
             {
                 if (value == baseClass) return;

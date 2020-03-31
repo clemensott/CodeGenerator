@@ -3,6 +3,7 @@ using StdOttStandard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGenerator.Base;
 
 namespace CodeGenerator.Replace
 {
@@ -12,7 +13,7 @@ namespace CodeGenerator.Replace
 
         public string SrcText
         {
-            get { return srcText; }
+            get => srcText;
             set
             {
                 if (value == srcText) return;
@@ -33,7 +34,7 @@ namespace CodeGenerator.Replace
             Case caseSensitive;
             string searchText = parts[1];
 
-            if (!EnumToStringConverter.TryParse<Case>(parts[0], out caseSensitive)) return false;
+            if (!EnumToStringConverter.TryParse(parts[0], out caseSensitive)) return false;
 
             obj = new Replace(searchText, caseSensitive, parts.Skip(2));
             return true;
@@ -51,11 +52,7 @@ namespace CodeGenerator.Replace
             for (int i = 0; i < count; i++)
             {
                 int index2 = i;
-                yield return new Func<Func<Replace, string>, string>((f) =>
-                {
-                    int index = i;
-                    return GetReplacedText(index2);
-                });
+                yield return (f) => GetReplacedText(index2);
             }
         }
 
