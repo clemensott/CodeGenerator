@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 using StdOttStandard;
+using StdOttStandard.Linq;
 
 namespace CodeGenerator.BaseClass
 {
