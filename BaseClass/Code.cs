@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace CodeGenerator.BaseClass
 {
-    enum Bracket { Round, Curly, Square, Than, Quote, NoEscapingQuote, Apostrophe, SingleLineComment, MultiLineComment }
+    internal enum Bracket { Round, Curly, Square, Than, Quote, NoEscapingQuote, Apostrophe, SingleLineComment, MultiLineComment }
 
-    class Code : IEnumerable<char>
+    internal class Code : IEnumerable<char>
     {
         private int position;
 
@@ -213,7 +213,7 @@ namespace CodeGenerator.BaseClass
 
         public int NextIndexOf(string text)
         {
-            return String.IndexOf(text);
+            return String.IndexOf(text, StringComparison.Ordinal);
         }
 
         public bool ContainsBetween(char c, int end)
@@ -251,7 +251,7 @@ namespace CodeGenerator.BaseClass
             return string.Concat(this.Skip(start).Take(end - start));
         }
 
-        private bool IsCodeBracket(Bracket? bracket)
+        private static bool IsCodeBracket(Bracket? bracket)
         {
             if (!bracket.HasValue) return true;
 

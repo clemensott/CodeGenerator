@@ -8,7 +8,7 @@ namespace CodeGenerator.BaseClass
 
         public string DataType
         {
-            get { return dataType; }
+            get => dataType;
             set
             {
                 if (value == dataType) return;
@@ -20,7 +20,7 @@ namespace CodeGenerator.BaseClass
 
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 if (value == name) return;

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGenerator.Base;
 
 namespace CodeGenerator.Snippets
 {
@@ -30,7 +31,7 @@ namespace CodeGenerator.Snippets
                 return new Func<Func<Snippet, string>, string>[] { f => GetCodeFunc()(CodeObject) };
             }
 
-            return CodeObjects.Select(s => GetPartFuncFunc(s));
+            return CodeObjects.Select(GetPartFuncFunc);
         }
 
         private Func<Snippet, string> GetCodeFunc()
@@ -50,7 +51,7 @@ namespace CodeGenerator.Snippets
 
         protected override bool TryParse(string line, out Snippet obj)
         {
-            throw new NotImplementedException();
+            throw new NotSupportedException();
         }
     }
 }

@@ -31,8 +31,12 @@
             <DataGrid.Columns>
                 <DataGridTextColumn Header="PropertyType" Binding="{Binding PropertyType,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="Name" Binding="{Binding Name,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Readonly" Binding="{Binding IsReadonly,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridCheckBoxColumn Header="Body" Binding="{Binding WithBody,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
-                <DataGridCheckBoxColumn Header="Ignore" Binding="{Binding IgnoreChanges,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Changes" Binding="{Binding WithPropertyChanged,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="New" Binding="{Binding WithNewValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Old" Binding="{Binding WithOldValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
+                <DataGridCheckBoxColumn Header="Validate" Binding="{Binding WithValidation,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
                 <DataGridTextColumn Header="DefaultValue" Binding="{Binding DefaultValue,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"/>
             </DataGrid.Columns>
         </DataGrid>

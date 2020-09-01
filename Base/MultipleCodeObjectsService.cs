@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Windows.Input;
 
-namespace CodeGenerator
+namespace CodeGenerator.Base
 {
     public abstract class MultipleCodeObjectsService<T> : CodeObjectsService<T> where T : INotifyPropertyChanged
     {
@@ -9,7 +9,7 @@ namespace CodeGenerator
 
         public virtual string ParseText
         {
-            get { return parseText; }
+            get => parseText;
             set
             {
                 if (value == parseText) return;

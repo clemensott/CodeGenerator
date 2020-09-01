@@ -8,7 +8,7 @@ namespace CodeGenerator.Property
     /// </summary>
     public partial class PropertyControl : UserControl
     {
-        public CodePropertiesService ViewModel { get { return (CodePropertiesService)DataContext; } }
+        public CodePropertiesService ViewModel => (CodePropertiesService)DataContext;
 
         public PropertyControl()
         {

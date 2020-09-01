@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 
-namespace CodeGenerator
+namespace CodeGenerator.Base
 {
     public abstract class CodeObjectsService<T> : ICodeObjectsService, INotifyPropertyChanged where T : INotifyPropertyChanged
     {
@@ -13,7 +13,7 @@ namespace CodeGenerator
 
         public int CodePartsIndex
         {
-            get { return codePartsIndex; }
+            get => codePartsIndex;
             private set
             {
                 if (value == codePartsIndex) return;
@@ -24,7 +24,7 @@ namespace CodeGenerator
             }
         }
 
-        public bool IsCopying { get { return codePartsIndex >= 0; } }
+        public bool IsCopying => codePartsIndex >= 0;
 
         public ObservableCollection<T> CodeObjects { get; }
 

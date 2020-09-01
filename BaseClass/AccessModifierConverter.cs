@@ -2,7 +2,7 @@
 
 namespace CodeGenerator.BaseClass
 {
-    class AccessModifierConverter : EnumConverter<AccessModifier>
+    internal class AccessModifierConverter : EnumConverter<AccessModifier>
     {
     }
 }

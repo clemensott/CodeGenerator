@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using StdOttStandard;
+using StdOttStandard.Linq;
 
 namespace CodeGenerator.Snippets
 {

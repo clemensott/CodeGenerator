@@ -3,27 +3,20 @@ using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using CodeGenerator.Base;
 
 namespace CodeGenerator
 {
-    class CodeCopyService
+    internal class CodeCopyService
     {
         private static CodeCopyService instance;
 
-        public static CodeCopyService Current
-        {
-            get
-            {
-                if (instance == null) instance = new CodeCopyService();
+        public static CodeCopyService Current => instance??=new CodeCopyService();
 
-                return instance;
-            }
-        }
-
-        private DispatcherTimer timer;
+        private readonly DispatcherTimer timer;
         private string lastClipboardText;
         private ICodeObjectsService currentCodeObjectsService;
-        private HotKey hotKey;
+        private readonly HotKey hotKey;
 
         private CodeCopyService()
         {
@@ -136,7 +129,7 @@ namespace CodeGenerator
             }
         }
 
-        private void ShortText(ref string text, int maxLines)
+        private static void ShortText(ref string text, int maxLines)
         {
             for (int i = 0, lines = 0; i < text.Length; i++)
             {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using CodeGenerator.Base;
 
 namespace CodeGenerator.Simple
 {
@@ -37,7 +38,7 @@ namespace CodeGenerator.Simple
 
         protected override IEnumerable<Func<Simple, string>> GetObjectsCodeGenerators(bool getWhole)
         {
-            yield return new Func<Simple, string>(GetCode);
+            yield return GetCode;
         }
 
         private string GetCode(Simple simple)
@@ -63,7 +64,7 @@ namespace CodeGenerator.Simple
             throw new ArgumentException("Commend \"{0}\" is not implemented,", simple.GetCommend());
         }
 
-        public string GetSingleton(string[] args)
+        private static string GetSingleton(string[] args)
         {
             string format = "\r\n";
             format += "\t\tprivate static {2} instance;\r\n";

@@ -8,7 +8,7 @@ namespace CodeGenerator.Singleton
 
         public string ClassName
         {
-            get { return className; }
+            get => className;
             set
             {
                 if (value == className) return;

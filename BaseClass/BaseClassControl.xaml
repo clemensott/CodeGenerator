@@ -16,9 +16,9 @@
             </ObjectDataProvider.MethodParameters>
         </ObjectDataProvider>
         
-        <local:AccessModifierConverter x:Key="baseMainMofifierConverter"/>
-        <local:AccessModifierConverter x:Key="baseGeterMofifierConverter"/>
-        <local:AccessModifierConverter x:Key="baseSeterMofifierConverter"/>
+        <local:AccessModifierConverter x:Key="baseMainModifierConverter"/>
+        <local:AccessModifierConverter x:Key="baseGeterModifierConverter"/>
+        <local:AccessModifierConverter x:Key="baseSeterModifierConverter"/>
     </UserControl.Resources>
 
     <Grid>

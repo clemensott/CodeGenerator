@@ -18,7 +18,7 @@ namespace CodeGenerator.BaseClass
 
         public ElementType Type
         {
-            get { return type; }
+            get => type;
             set
             {
                 if (value == type) return;
@@ -30,7 +30,7 @@ namespace CodeGenerator.BaseClass
 
         public bool IsStatic
         {
-            get { return isStatic; }
+            get => isStatic;
             set
             {
                 if (value == isStatic) return;
@@ -42,7 +42,7 @@ namespace CodeGenerator.BaseClass
 
         public string DataType
         {
-            get { return datatype; }
+            get => datatype;
             set
             {
                 if (value == datatype) return;
@@ -54,7 +54,7 @@ namespace CodeGenerator.BaseClass
 
         public string Name
         {
-            get { return name; }
+            get => name;
             set
             {
                 if (value == name) return;
@@ -66,7 +66,7 @@ namespace CodeGenerator.BaseClass
 
         public AccessModifier AccessModifier
         {
-            get { return accessModifier; }
+            get => accessModifier;
             set
             {
                 if (value == accessModifier) return;
@@ -78,7 +78,7 @@ namespace CodeGenerator.BaseClass
 
         public AccessModifier? GeterModifier
         {
-            get { return geterModifier; }
+            get => geterModifier;
             set
             {
                 if (value == geterModifier) return;
@@ -90,7 +90,7 @@ namespace CodeGenerator.BaseClass
 
         public AccessModifier? SeterModifier
         {
-            get { return seterModifier; }
+            get => seterModifier;
             set
             {
                 if (value == seterModifier) return;
@@ -102,7 +102,7 @@ namespace CodeGenerator.BaseClass
 
         public Parameter[] Parameters
         {
-            get { return parameters; }
+            get => parameters;
             set
             {
                 if (value == parameters) return;
@@ -122,7 +122,7 @@ namespace CodeGenerator.BaseClass
         public override string ToString()
         {
             string parameters = string.Join(", ", Parameters.Select(p => p.DataType + " " + p.Name));
-            string format = "{0} {1} {2} {3} ({4}) {5} {6}";
+            const string format = "{0} {1} {2} {3} ({4}) {5} {6}";
             string geter = (GeterModifier?.ToString() ?? "No") + " Geter";
             string seter = (SeterModifier?.ToString() ?? "No") + " Seter";
 

@@ -1,5 +1,5 @@
-﻿
-using StdOttStandard;
+﻿using StdOttStandard;
+using StdOttStandard.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -18,7 +18,7 @@ namespace CodeGenerator.Replace
 
         public Case CaseSensitive
         {
-            get { return caseSensitive; }
+            get => caseSensitive;
             set
             {
                 if (value == caseSensitive) return;
@@ -30,7 +30,7 @@ namespace CodeGenerator.Replace
 
         public string SearchText
         {
-            get { return searchText; }
+            get => searchText;
             set
             {
                 if (value == searchText) return;
@@ -42,13 +42,13 @@ namespace CodeGenerator.Replace
 
         public string ReplaceText
         {
-            get { return Serializer.Serialize(ReplaceTexts.ToNotNull(), '#'); }
-            set { ReplaceTexts = Serializer.Deserialize(value, '#').ToArray(); }
+            get => Serializer.Serialize(ReplaceTexts.ToNotNull(), '#');
+            set => ReplaceTexts = Serializer.Deserialize(value, '#').ToArray();
         }
 
         public string[] ReplaceTexts
         {
-            get { return replaceTexts; }
+            get => replaceTexts;
             set
             {
                 if (value == replaceTexts) return;
@@ -78,16 +78,16 @@ namespace CodeGenerator.Replace
             switch (CaseSensitive)
             {
                 case Case.Ignore:
-                    index = text.ToLower().IndexOf(searchText.ToLower());
+                    index = text.IndexOf(searchText, StringComparison.OrdinalIgnoreCase);
                     break;
 
                 case Case.Sensitive:
-                    index = text.IndexOf(searchText);
+                    index = text.IndexOf(searchText, StringComparison.Ordinal);
                     break;
 
                 case Case.KeepFirstLetter:
-                    int lowerIndex = text.IndexOf(ToLowerAt(searchText, 0));
-                    int upperIndex = text.IndexOf(ToUpperAt(searchText, 0));
+                    int lowerIndex = text.IndexOf(ToLowerAt(searchText, 0), StringComparison.Ordinal);
+                    int upperIndex = text.IndexOf(ToUpperAt(searchText, 0), StringComparison.Ordinal);
 
                     if (lowerIndex == -1 && upperIndex == -1) index = -1;
                     else if ((lowerIndex != -1 && lowerIndex < upperIndex) || upperIndex == -1)
@@ -103,13 +103,13 @@ namespace CodeGenerator.Replace
                     break;
 
                 default:
-                    throw new NotImplementedException();
+                    throw new ArgumentException(nameof(CaseSensitive));
             }
 
             return index != -1;
         }
 
-        private string ToLowerAt(string text, int index)
+        private static string ToLowerAt(string text, int index)
         {
             if (char.IsLower(text[index])) return text;
 
@@ -121,7 +121,7 @@ namespace CodeGenerator.Replace
             return output;
         }
 
-        private string ToUpperAt(string text, int index)
+        private static string ToUpperAt(string text, int index)
         {
             if (char.IsUpper(text[index])) return text;
 

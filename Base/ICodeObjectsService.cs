@@ -1,6 +1,6 @@
-﻿namespace CodeGenerator
+﻿namespace CodeGenerator.Base
 {
-    interface ICodeObjectsService
+    internal interface ICodeObjectsService
     {
         int CodePartsIndex { get; }
         bool IsCopying { get; }

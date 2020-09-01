@@ -16,16 +16,15 @@ namespace CodeGenerator.Replace
 
         private void TbxReplaceText_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F && (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl)))
+            if (e.Key != Key.F || (!Keyboard.IsKeyDown(Key.LeftCtrl) && !Keyboard.IsKeyDown(Key.RightCtrl))) return;
+            
+            if (tbxReplaceText.SelectedText.Length > 0)
             {
-                if (tbxReplaceText.SelectedText.Length > 0)
-                {
-                    tbxParseText.Text = "2#" + tbxReplaceText.SelectedText + "#";
-                    tbxParseText.SelectionStart = tbxParseText.Text.Length;
-                }
-
-                tbxParseText.Focus();
+                tbxParseText.Text = "2#" + tbxReplaceText.SelectedText + "#";
+                tbxParseText.SelectionStart = tbxParseText.Text.Length;
             }
+
+            tbxParseText.Focus();
         }
 
         private void BtnGenerate_Click(object sender, RoutedEventArgs e)
