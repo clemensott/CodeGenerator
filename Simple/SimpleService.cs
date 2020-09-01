@@ -52,6 +52,12 @@ namespace CodeGenerator.Simple
 
                 case "xrd":
                     return GetXmalRowDefinition(simple.GetArgs());
+
+                case "dct":
+                    return GetDataContextOfSenderCode(simple.GetArgs());
+
+                case "ccd":
+                    return GetCollectionChangedForeachCode(simple.GetArgs());
             }
 
             throw new ArgumentException("Commend \"{0}\" is not implemented,", simple.GetCommend());
@@ -132,6 +138,30 @@ namespace CodeGenerator.Simple
             }
 
             return Enumerable.Repeat(arg.Substring(i), count);
+        }
+
+        private static string GetDataContextOfSenderCode(string[] args)
+        {
+            return string.Format("{0} {1} = ({0})((FrameworkElement)sender).DataContext;", args[0], args[1]);
+        }
+
+        private static string GetCollectionChangedForeachCode(string[] args)
+        {
+            string className = args.Length >= 1 ? args[0] : "object";
+            string newItemName = args.Length >= 2 ? args[1] : "item";
+            string oldItemName = args.Length >= 3 ? args[2] : newItemName;
+
+            const string code = @"foreach ({2} {3} in e.NewItems ?? new object[0])
+            {0}
+                
+            {1}
+
+            foreach ({2} {3} in e.OldItems ?? new object[0])
+            {0}
+                
+            {1}";
+
+            return string.Format(code, "{", "}", className, newItemName, oldItemName);
         }
     }
 }
