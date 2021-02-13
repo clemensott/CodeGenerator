@@ -8,6 +8,16 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <None Remove="Snippets\snippets.txt" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="Snippets\snippets.txt">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
       <ProjectReference Include="..\StdOttLib\StdOttFrameworkLib\StdOttFrameworkLib.csproj" />
       <ProjectReference Include="..\StdOttLib\StdOttStandardLib\StdOttStandardLib.csproj" />
     </ItemGroup>

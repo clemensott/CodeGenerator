@@ -12,7 +12,7 @@ namespace CodeGenerator.Snippets
 
         public SnippetServices()
         {
-            string[] fileLines = File.ReadAllLines("snippets.txt");
+            string[] fileLines = File.ReadAllLines(@"Snippets\snippets.txt");
             services = GetServices(fileLines).ToArray();
         }
 
